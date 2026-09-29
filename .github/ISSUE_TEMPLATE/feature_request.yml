@@ -1,0 +1,37 @@
+name: 功能建議 · Feature request
+description: 建議 KeyDBX App 的新功能或改進 · Suggest a new feature or an improvement for the KeyDBX app
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > [!WARNING]
+        > **Issue 是公開的。不要貼上密碼、資料庫檔、主密碼、金鑰檔或 TOTP 密鑰。**
+        > **Issues are public. Do not paste passwords, database files, master passwords, key files, or TOTP secrets.**
+  - type: textarea
+    id: problem
+    attributes:
+      label: 想解決的問題 · Problem
+      description: |
+        你想做什麼，目前哪裡做不到？
+        What do you want to do, and what stops you now?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建議的做法 · Proposal
+      description: |
+        你希望 KeyDBX 怎麼做？
+        How would you like KeyDBX to handle it?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 其他 App 的做法 · How other apps handle it
+      description: |
+        KeePass、KeePassXC 或其他密碼管理 App 怎麼處理（選填）。
+        How KeePass, KeePassXC, or other password managers handle it (optional).
+    validations:
+      required: false

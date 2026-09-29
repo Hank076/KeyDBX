@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>KeyDBX — KeePass-compatible password manager for iOS</title>
+<meta name="description" content="KeyDBX is a KeePass-compatible password manager for iOS. It reads and writes KDBX 4 databases and supports AutoFill, passkeys, verification codes, Face ID, and Dropbox sync. Decryption happens only on your device.">
+<link rel="canonical" href="https://keydbx.hankchen.info/en/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/en/">KeyDBX</a>
+    <nav class="site" aria-label="Site">
+      <ul>
+        <li><a href="/en/" aria-current="page">Overview</a></li>
+        <li><a href="/en/privacy/">Privacy Policy</a></li>
+        <li><a href="/en/support/">Support</a></li>
+        <li><a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>KeyDBX</h1>
+  <p class="lead">A KeePass-compatible password manager for iOS. Your database is decrypted only on your device. The developer runs no servers and never sees your data.</p>
+
+  <h2>Features</h2>
+  <ul class="features">
+    <li>
+      <h3>KeePass databases</h3>
+      <p>Reads and writes KDBX 4.0 and 4.1 with a master password and key file. Saving changes only what you edited, so KeePass and KeePassXC keep opening the same file.</p>
+    </li>
+    <li>
+      <h3>AutoFill</h3>
+      <p>Fills usernames, passwords, and two-step verification codes in Safari and other apps. When you create an account or change a password, you can save the new password to KeyDBX (iOS 26.2 or later).</p>
+    </li>
+    <li>
+      <h3>Passkeys</h3>
+      <p>Creates and uses passkeys for websites. The storage format is compatible with KeePassXC 2.7.12 or later.</p>
+    </li>
+    <li>
+      <h3>Verification codes</h3>
+      <p>Shows TOTP codes, including Steam codes. Set them up by scanning a QR code with the camera or from a photo, or by opening an <code>otpauth://</code> link.</p>
+    </li>
+    <li>
+      <h3>Face ID</h3>
+      <p>Unlocks the app and AutoFill with Face ID, so you do not type the master password every time.</p>
+    </li>
+    <li>
+      <h3>Dropbox sync</h3>
+      <p>Opens and saves databases on Dropbox directly, without the Dropbox app. When both sides change, Dropbox keeps a separate copy and no version is overwritten.</p>
+    </li>
+    <li>
+      <h3>Files and iCloud Drive</h3>
+      <p>Opens databases in the Files app, including iCloud Drive and other cloud storage.</p>
+    </li>
+    <li>
+      <h3>Works offline</h3>
+      <p>Unlocks and edits a Dropbox database without a network connection and uploads the changes when you are back online.</p>
+    </li>
+    <li>
+      <h3>Privacy protection</h3>
+      <p>Auto-lock, hidden content in the app switcher, and hidden passwords during screen recording. Copied passwords stay on this device and are cleared after 60 seconds.</p>
+    </li>
+  </ul>
+
+  <h2>More features</h2>
+  <ul>
+    <li>Password generator with a strength indicator.</li>
+    <li>Entry history: view, compare, and restore earlier versions.</li>
+    <li>Import from and export to other password managers with Credential Exchange.</li>
+    <li>Interface languages: English and Traditional Chinese.</li>
+  </ul>
+
+  <h2>Requirements</h2>
+  <p>iOS 26 or later.</p>
+
+  <h2>Not supported</h2>
+  <ul>
+    <li>KDBX 3.1 and KeePass 1.x databases.</li>
+    <li>YubiKey and HOTP.</li>
+    <li>Direct connections to cloud services other than Dropbox. Open files in other cloud storage through the Files app.</li>
+  </ul>
+
+  <p><a href="/en/privacy/">Privacy Policy</a> · <a href="/en/support/">Support and bug reports</a></p>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass, KeePassXC, Dropbox, Apple, iPhone, iCloud, and Face ID are trademarks of their respective owners. KeyDBX is not affiliated with these owners.</p>
+    <p><a href="/en/privacy/">Privacy Policy</a> · <a href="/en/support/">Support</a> · <a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+name: 問題回報 · Bug report
+description: 回報 KeyDBX App 的錯誤 · Report a bug in the KeyDBX app
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > [!WARNING]
+        > **Issue 是公開的。不要貼上密碼、資料庫檔、主密碼、金鑰檔或 TOTP 密鑰。截圖前先確認畫面上沒有這些內容。**
+        > **Issues are public. Do not paste passwords, database files, master passwords, key files, or TOTP secrets. Check screenshots for this information before you attach them.**
+
+        安全漏洞請改用[私下漏洞回報](https://github.com/Hank076/KeyDBX/security/advisories/new)。
+        Report security vulnerabilities through [private vulnerability reporting](https://github.com/Hank076/KeyDBX/security/advisories/new) instead.
+  - type: input
+    id: app-version
+    attributes:
+      label: KeyDBX 版本 · KeyDBX version
+      placeholder: "1.0 (1)"
+    validations:
+      required: true
+  - type: input
+    id: ios-version
+    attributes:
+      label: iOS 版本 · iOS version
+      placeholder: "26.2"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 裝置 · Device
+      placeholder: "iPhone 17"
+    validations:
+      required: true
+  - type: dropdown
+    id: database-location
+    attributes:
+      label: 資料庫位置 · Database location
+      options:
+        - 「檔案」App 中的本機位置 · Files app, on this device
+        - iCloud Drive
+        - Dropbox（在 KeyDBX 內登入）· Dropbox, signed in within KeyDBX
+        - Dropbox（經「檔案」App）· Dropbox, through the Files app
+        - 其他 · Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重現步驟 · Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 預期結果 · Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 實際結果 · Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: error-message
+    attributes:
+      label: 錯誤訊息全文 · Full error message
+      description: |
+        請貼上完整的錯誤訊息。KeyDBX 的錯誤訊息含階段與 byte offset，不含密碼。
+        Paste the complete error message. KeyDBX error messages contain the stage and byte offset, never passwords.
+      render: text
+  - type: checkboxes
+    id: no-secrets
+    attributes:
+      label: 確認 · Confirmation
+      options:
+        - label: 這份回報不含密碼、資料庫檔、主密碼、金鑰檔或 TOTP 密鑰。· This report contains no passwords, database files, master passwords, key files, or TOTP secrets.
+          required: true

@@ -1,0 +1,15 @@
+# Cloudflare Pages 的回應 header。語法見 https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+
+# 驗證檔沒有副檔名，iOS 要求以 application/json 回應。
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+
+# 回呼網址帶有 OAuth 授權碼，不讓瀏覽器與中介快取保存。
+/dropbox/oauth/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex

@@ -1,0 +1,5 @@
+# 本機文件：待辦與交接只留在本機。repo 公開
+docs/
+
+# macOS
+.DS_Store

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>KeyDBX — KeePass 相容的 iOS 密碼管理 App</title>
+<meta name="description" content="KeyDBX 是 KeePass 相容的 iOS 密碼管理 App。讀寫 KDBX 4 資料庫，支援自動填寫、passkey、驗證碼、Face ID 與 Dropbox 同步，解密只在你的裝置上進行。">
+<link rel="canonical" href="https://keydbx.hankchen.info/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">KeyDBX</a>
+    <nav class="site" aria-label="網站">
+      <ul>
+        <li><a href="/" aria-current="page">介紹</a></li>
+        <li><a href="/privacy/">隱私政策</a></li>
+        <li><a href="/support/">支援</a></li>
+        <li><a href="/en/" lang="en" hreflang="en">English</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>KeyDBX</h1>
+  <p class="lead">KeePass 相容的 iOS 密碼管理 App。資料庫只在你的裝置上解密；開發者沒有伺服器，也看不到你的資料。</p>
+
+  <h2>功能</h2>
+  <ul class="features">
+    <li>
+      <h3>KeePass 資料庫</h3>
+      <p>讀寫 KDBX 4.0 與 4.1，支援主密碼與金鑰檔。存檔只改你修改的部分，KeePass 與 KeePassXC 可以繼續開啟同一個檔案。</p>
+    </li>
+    <li>
+      <h3>自動填寫</h3>
+      <p>在 Safari 與其他 App 填入帳號、密碼與兩步驟驗證碼。建立帳號或更改密碼時，可以把新密碼存進 KeyDBX（iOS 26.2 或以上）。</p>
+    </li>
+    <li>
+      <h3>Passkey</h3>
+      <p>為網站建立與使用 passkey。儲存格式與 KeePassXC 2.7.12 以上相容。</p>
+    </li>
+    <li>
+      <h3>兩步驟驗證碼</h3>
+      <p>顯示 TOTP 驗證碼，包含 Steam 驗證碼。以相機或照片掃描 QR code 設定，或開啟 <code>otpauth://</code> 連結。</p>
+    </li>
+    <li>
+      <h3>Face ID</h3>
+      <p>以 Face ID 解鎖 App 與自動填寫，不必每次輸入主密碼。</p>
+    </li>
+    <li>
+      <h3>Dropbox 同步</h3>
+      <p>直接開啟與存回 Dropbox 上的資料庫，不需要安裝 Dropbox App。兩邊都修改時，Dropbox 另存一份副本，不覆蓋任何版本。</p>
+    </li>
+    <li>
+      <h3>「檔案」與 iCloud Drive</h3>
+      <p>開啟「檔案」App 中的資料庫，包含 iCloud Drive 與其他雲端空間。</p>
+    </li>
+    <li>
+      <h3>離線可用</h3>
+      <p>沒有網路時仍能解鎖與編輯 Dropbox 上的資料庫，連線後再上傳。</p>
+    </li>
+    <li>
+      <h3>隱私保護</h3>
+      <p>自動鎖定、在 App 切換器隱藏內容、螢幕錄影時隱藏密碼。複製的密碼只留在這台裝置，60 秒後清除。</p>
+    </li>
+  </ul>
+
+  <h2>更多功能</h2>
+  <ul>
+    <li>密碼產生器與密碼強度提示。</li>
+    <li>項目的歷史版本：查看、比較與還原。</li>
+    <li>以 Credential Exchange 與其他密碼管理 App 互相匯入與匯出。</li>
+    <li>介面語言：正體中文與英文。</li>
+  </ul>
+
+  <h2>系統需求</h2>
+  <p>iOS 26 或以上。</p>
+
+  <h2>不支援</h2>
+  <ul>
+    <li>KDBX 3.1 與 KeePass 1.x 的資料庫。</li>
+    <li>YubiKey 與 HOTP。</li>
+    <li>Dropbox 以外的雲端服務直接連線。其他雲端空間請經「檔案」App 開啟。</li>
+  </ul>
+
+  <p><a href="/privacy/">隱私政策</a> · <a href="/support/">支援與問題回報</a></p>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass、KeePassXC、Dropbox、Apple、iPhone、iCloud 與 Face ID 是各自擁有者的商標。KeyDBX 與這些擁有者沒有關聯。</p>
+    <p><a href="/privacy/">隱私政策</a> · <a href="/support/">支援</a> · <a href="/en/" lang="en" hreflang="en">English</a></p>
+  </div>
+</footer>
+</body>
+</html>

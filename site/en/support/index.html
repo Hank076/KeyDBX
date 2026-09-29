@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>Support — KeyDBX</title>
+<meta name="description" content="Frequently asked questions about KeyDBX, how to report a bug, and how to report a security issue privately.">
+<link rel="canonical" href="https://keydbx.hankchen.info/en/support/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/support/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/support/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/en/">KeyDBX</a>
+    <nav class="site" aria-label="Site">
+      <ul>
+        <li><a href="/en/">Overview</a></li>
+        <li><a href="/en/privacy/">Privacy Policy</a></li>
+        <li><a href="/en/support/" aria-current="page">Support</a></li>
+        <li><a href="/support/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Support</h1>
+  <p class="lead">Start with the frequently asked questions. If they do not answer your question, report it on GitHub.</p>
+
+  <h2>Frequently asked questions</h2>
+
+  <details>
+    <summary>How do I use KeyDBX to AutoFill passwords?</summary>
+    <p>Open Settings &gt; General &gt; AutoFill &amp; Passwords on your iPhone and select KeyDBX. Then tap a password suggestion in a sign-in field, or pick an account from the suggestions above the keyboard.</p>
+  </details>
+
+  <details>
+    <summary>How do I open a database on Dropbox?</summary>
+    <ol>
+      <li>On the KeyDBX unlock screen, tap Choose, then Choose from Dropbox.</li>
+      <li>Sign in to Dropbox and allow KeyDBX to access it.</li>
+      <li>Put the <code>.kdbx</code> file in the KeyDBX folder inside the <code>Apps</code> folder in your Dropbox.</li>
+      <li>Select the file in the KeyDBX Dropbox list.</li>
+    </ol>
+    <p>KeyDBX can access only its own app folder. For files in other locations, use Choose from Files and open them through the Dropbox app.</p>
+  </details>
+
+  <details>
+    <summary>There is a conflicted copy in my Dropbox. What do I do?</summary>
+    <p>When the same database changes in two places, KeyDBX does not overwrite the version on Dropbox. Dropbox saves the KeyDBX version under another file name. Open both files in KeePass or KeePassXC on your computer and merge them, then tap Got It in KeyDBX Settings.</p>
+  </details>
+
+  <details>
+    <summary>Can I use KeyDBX offline?</summary>
+    <p>Yes. A Dropbox database unlocks with the version this device last synced, and you can edit and save it. KeyDBX uploads the changes when you return to the app or tap Sync Now in Settings.</p>
+  </details>
+
+  <details>
+    <summary>KeyDBX cannot open my database.</summary>
+    <p>KeyDBX supports KDBX 4.0 and 4.1. Convert KDBX 3.1 and KeePass 1.x databases to the KDBX 4 format with KeePass or KeePassXC on your computer first. The error message names the stage that failed. Include the full error message when you report a bug.</p>
+  </details>
+
+  <details>
+    <summary>Can I recover a forgotten master password?</summary>
+    <p>No. Your database is encrypted with your master password. The developer has none of your data and no recovery mechanism.</p>
+  </details>
+
+  <details>
+    <summary>Face ID unlock suddenly asks for my master password.</summary>
+    <p>When the Face ID data on your device changes (for example, you reset Face ID or add an appearance), the master password KeyDBX stored becomes invalid. Enter the master password once, and Face ID unlock works again.</p>
+  </details>
+
+  <details>
+    <summary>AutoFill shows "Using AutoFill Copy".</summary>
+    <p>When the original file is temporarily unreadable (for example, when you are offline), AutoFill uses the encrypted copy on your device and shows when the copy was updated. The copy is updated each time you unlock or save. Open KeyDBX and unlock once to update it.</p>
+  </details>
+
+  <details>
+    <summary>A password I saved with AutoFill is not in the database.</summary>
+    <p>When AutoFill cannot write to the original file right away (for example, when you are offline), new passwords and passkeys are kept on your device. The next time you unlock the database in KeyDBX, the app writes the pending changes to the database. Pending changes are listed under Sync &amp; Pending Changes in KeyDBX Settings.</p>
+  </details>
+
+  <details>
+    <summary>Where did the password I copied go?</summary>
+    <p>Copied content stays on this device, is cleared automatically after 60 seconds, and does not sync to your other devices.</p>
+  </details>
+
+  <details>
+    <summary>Passwords are hidden during screen recording.</summary>
+    <p>During screen recording, mirroring, or AirPlay, KeyDBX hides passwords and verification codes. They appear again after recording or mirroring stops.</p>
+  </details>
+
+  <details>
+    <summary>How do I change the interface language?</summary>
+    <p>Choose it in KeyDBX under Settings › Language. By default, KeyDBX follows the system language.</p>
+  </details>
+
+  <h2>Report a bug</h2>
+  <div class="notice">
+    <p><strong>Issues are public.</strong> Do not paste passwords, database files, master passwords, key files, or TOTP secrets. Check screenshots for this information before you post them.</p>
+  </div>
+  <p>Include:</p>
+  <ul>
+    <li>The KeyDBX version, iOS version, and device model.</li>
+    <li>Where the database is: Files, iCloud Drive, Dropbox signed in within KeyDBX, or Dropbox opened through the Files app.</li>
+    <li>Steps to reproduce, the expected result, and the actual result.</li>
+    <li>The full text of the error message. Error messages contain only information such as the stage, the position, and error codes. They never contain passwords.</li>
+  </ul>
+  <p><a class="button" href="https://github.com/Hank076/KeyDBX/issues/new/choose">Report a bug on GitHub</a></p>
+  <p class="meta">You need a GitHub account to report a bug.</p>
+
+  <h2>Security issues</h2>
+  <p>If you find a security vulnerability, do not open a public issue. Use GitHub private vulnerability reporting. Only the developer can see the report.</p>
+  <ol>
+    <li>Open <a href="https://github.com/Hank076/KeyDBX/security/advisories/new">private vulnerability reporting</a> (Security → Report a vulnerability in the repository).</li>
+    <li>Describe the impact, the steps to reproduce, and the affected versions.</li>
+    <li>If a database is needed to reproduce the issue, create one with test data only. Do not attach a real database.</li>
+  </ol>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass, KeePassXC, Dropbox, Apple, iPhone, iCloud, and Face ID are trademarks of their respective owners. KeyDBX is not affiliated with these owners.</p>
+    <p><a href="/en/">Overview</a> · <a href="/en/privacy/">Privacy Policy</a> · <a href="/support/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>Privacy Policy — KeyDBX</title>
+<meta name="description" content="KeyDBX does not collect your data. Your database stays on your device and in the storage you choose, and decryption happens only on your device.">
+<link rel="canonical" href="https://keydbx.hankchen.info/en/privacy/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/privacy/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/privacy/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/en/">KeyDBX</a>
+    <nav class="site" aria-label="Site">
+      <ul>
+        <li><a href="/en/">Overview</a></li>
+        <li><a href="/en/privacy/" aria-current="page">Privacy Policy</a></li>
+        <li><a href="/en/support/">Support</a></li>
+        <li><a href="/privacy/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Privacy Policy</h1>
+  <p class="meta">Effective date: September 29, 2026</p>
+
+  <p class="lead">KeyDBX does not collect your data. The developer cannot see your database, your passwords, or how you use the app.</p>
+
+  <h2>Data the developer collects</h2>
+  <ul>
+    <li>The app does not collect personal data or usage data, and it sends no data to the developer.</li>
+    <li>The app contains no analytics, advertising, tracking, or third-party SDKs.</li>
+    <li>The developer runs no servers. The app itself connects to the network only when you use Dropbox, and it connects only to Dropbox. For cloud locations in the Files app, iOS and that cloud service handle uploads and downloads.</li>
+    <li>If you choose in iOS Settings to share analytics with app developers, Apple provides information such as crash reports to the developer under the <a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a>. iOS handles this, not the app.</li>
+  </ul>
+
+  <h2>Your database</h2>
+  <ul>
+    <li>Your database exists only on your device and in the storage location you choose: a location in the Files app (such as iCloud Drive) or Dropbox.</li>
+    <li>Decryption happens only on your device.</li>
+    <li>The app keeps an encrypted copy of the database on your device so that AutoFill can use it when the original file is temporarily unavailable. When you use Dropbox, the app keeps a local copy of the Dropbox file on your device. Neither copy is included in device backups.</li>
+    <li>When AutoFill cannot write to the database right away, newly saved passwords and passkeys are held on your device, protected by iOS file protection and excluded from device backups. They are written to the database the next time you unlock it in the app.</li>
+    <li>When you export with Credential Exchange, iOS passes the items you select to the other password manager you choose.</li>
+  </ul>
+
+  <h2>Dropbox</h2>
+  <p>This section applies only if you sign in to Dropbox in KeyDBX.</p>
+  <ul>
+    <li>The app connects directly to the Dropbox API and can access only the KeyDBX app folder in your Dropbox. It cannot see your other files.</li>
+    <li>Sign-in uses the iOS system web sign-in sheet, which shares your Dropbox sign-in state with Safari. The app cannot read what you enter on the sign-in page.</li>
+    <li>The sign-in token is stored in the Keychain on this device and does not sync to other devices. When you sign out, the app revokes the token and deletes it from the Keychain.</li>
+    <li>The app requests your account information from Dropbox and uses only the display name and account ID. The display name appears in Settings. The account ID is stored on your device to confirm which Dropbox account a database belongs to.</li>
+    <li>Dropbox handles your files and account under the <a href="https://www.dropbox.com/privacy">Dropbox Privacy Policy</a>.</li>
+  </ul>
+
+  <h2>Face ID</h2>
+  <ul>
+    <li>When you turn on Face ID unlock, your master password is stored in the Keychain on this device, protected by Face ID, and does not sync to other devices.</li>
+    <li>iOS performs the Face ID check. The app receives only success or failure and cannot access biometric data.</li>
+    <li>When the Face ID data on your device changes (for example, you reset Face ID or add an appearance), the stored master password becomes invalid and you enter the master password again.</li>
+  </ul>
+
+  <h2>AutoFill</h2>
+  <ul>
+    <li>AutoFill reads and decrypts the database on your device and does not connect to the network itself.</li>
+    <li>App pairing: for an item you pick on another app's sign-in screen, the app remembers that app's bundle ID, display name, and the item UUID on your device. It does not store usernames, passwords, or item titles. You can remove pairings in the app's Settings.</li>
+    <li>Keyboard suggestions: each time you unlock or save, the app gives iOS the domain and username of your items (or the item title when there is no username) to show suggestions. Passkeys also include the credential ID and user handle. This information never contains passwords, verification codes, or private keys. This feature is on by default, and you can turn it off in the app's Settings.</li>
+  </ul>
+
+  <h2>Camera and photos</h2>
+  <ul>
+    <li>The camera is used only to scan QR codes for two-step verification.</li>
+    <li>The iOS photo picker gives the app only the photo you pick. The app does not need access to your photo library.</li>
+    <li>Images are processed on your device. The app does not keep images.</li>
+  </ul>
+
+  <h2>Clipboard</h2>
+  <p>Content you copy from KeyDBX stays on this device, is not shared to your other devices through Universal Clipboard, and is cleared by iOS after 60 seconds.</p>
+
+  <h2>Diagnostic information on your device</h2>
+  <ul>
+    <li>The unlock timing shown in Settings is stored on your device. It contains only the time, the source read, the file size, the seconds for each stage, and a summary of the key derivation function (KDF) parameters.</li>
+    <li>Messages the app writes to the iOS system log do not contain passwords, keys, verification codes, or Dropbox tokens.</li>
+    <li>None of this information is sent to the developer.</li>
+  </ul>
+
+  <h2>This website</h2>
+  <ul>
+    <li>This website is hosted on Cloudflare Pages. Cloudflare may keep access logs, such as IP addresses, under the <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy</a>.</li>
+    <li>The website itself sets no cookies and uses no analytics, tracking, or JavaScript, and it loads no resources from other websites. Cloudflare security features may set their own cookies.</li>
+  </ul>
+
+  <h2>Reporting issues</h2>
+  <ul>
+    <li>Bug reports use GitHub Issues. Issues are public and anyone can read them. GitHub processes your account and report under the <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</li>
+    <li>Do not paste passwords, database files, master passwords, key files, or TOTP secrets in an issue.</li>
+    <li>Reports on GitHub fall under the GitHub General Privacy Statement.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <ul>
+    <li>General questions: <a href="https://github.com/Hank076/KeyDBX/issues">GitHub Issues</a>.</li>
+    <li>Security issues: use GitHub <a href="https://github.com/Hank076/KeyDBX/security/advisories/new">private vulnerability reporting</a> (Security → Report a vulnerability). Do not open a public issue.</li>
+  </ul>
+
+  <h2>Changes to this policy</h2>
+  <p>When this policy changes, this page and its effective date are updated.</p>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass, KeePassXC, Dropbox, Apple, iPhone, iCloud, and Face ID are trademarks of their respective owners. KeyDBX is not affiliated with these owners.</p>
+    <p><a href="/en/">Overview</a> · <a href="/en/support/">Support</a> · <a href="/privacy/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></p>
+  </div>
+</footer>
+</body>
+</html>

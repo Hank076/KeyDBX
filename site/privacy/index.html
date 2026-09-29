@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>隱私政策 — KeyDBX</title>
+<meta name="description" content="KeyDBX 不收集你的資料。資料庫只存在你的裝置與你選擇的儲存位置，解密只在裝置上進行。">
+<link rel="canonical" href="https://keydbx.hankchen.info/privacy/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/privacy/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/privacy/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">KeyDBX</a>
+    <nav class="site" aria-label="網站">
+      <ul>
+        <li><a href="/">介紹</a></li>
+        <li><a href="/privacy/" aria-current="page">隱私政策</a></li>
+        <li><a href="/support/">支援</a></li>
+        <li><a href="/en/privacy/" lang="en" hreflang="en">English</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>隱私政策</h1>
+  <p class="meta">生效日期：2026 年 9 月 29 日</p>
+
+  <p class="lead">KeyDBX 不收集你的資料。開發者看不到你的資料庫、密碼或使用情形。</p>
+
+  <h2>開發者收集的資料</h2>
+  <ul>
+    <li>App 不收集個人資料或使用資料，也不傳送任何資料給開發者。</li>
+    <li>App 沒有分析、廣告、追蹤或第三方 SDK。</li>
+    <li>開發者沒有伺服器。App 本身只在你使用 Dropbox 時連線網路，而且只連到 Dropbox。「檔案」App 中雲端位置的上傳與下載，由 iOS 與該雲端服務處理。</li>
+    <li>如果你在 iOS 設定中選擇與 App 開發者分享分析資料，Apple 會依 <a href="https://www.apple.com/tw/legal/privacy/">Apple 的隱私權政策</a>提供當機報告等資訊給開發者。這由 iOS 處理，不經過 App。</li>
+  </ul>
+
+  <h2>你的資料庫</h2>
+  <ul>
+    <li>資料庫只存在你的裝置，以及你選擇的儲存位置：「檔案」App 中的位置（例如 iCloud Drive）或 Dropbox。</li>
+    <li>解密只在你的裝置上進行。</li>
+    <li>App 在裝置上另存資料庫的加密副本，讓自動填寫在原檔暫時無法讀取時使用。使用 Dropbox 時，App 在裝置上保存 Dropbox 檔案的本機副本。這兩種副本都不納入裝置備份。</li>
+    <li>自動填寫無法立即寫回資料庫時，新存的密碼與 passkey 暫存在裝置上，受 iOS 的檔案保護，不納入裝置備份。下次在 App 解鎖資料庫時寫入。</li>
+    <li>你以 Credential Exchange 匯出時，iOS 把你選的項目交給你選擇的另一個密碼管理 App。</li>
+  </ul>
+
+  <h2>Dropbox</h2>
+  <p>以下內容只適用於你在 KeyDBX 內登入 Dropbox 的情況。</p>
+  <ul>
+    <li>App 直接連線 Dropbox API，只能存取 Dropbox 中 KeyDBX 的 App 資料夾，看不到其他檔案。</li>
+    <li>登入使用 iOS 系統的網頁登入畫面，與 Safari 共用 Dropbox 的登入狀態。App 取得不到你在登入畫面輸入的內容。</li>
+    <li>登入後的 token 存在這台裝置的 Keychain，不會同步到其他裝置。登出時 App 撤銷 token 並從 Keychain 刪除。</li>
+    <li>App 向 Dropbox 取得帳號資訊，只使用顯示名稱與帳號 ID。顯示名稱顯示在設定畫面。帳號 ID 存在裝置上，用來確認資料庫屬於哪一個 Dropbox 帳號。</li>
+    <li>Dropbox 對你的檔案與帳號的處理，適用 <a href="https://www.dropbox.com/privacy">Dropbox 的隱私政策</a>。</li>
+  </ul>
+
+  <h2>Face ID</h2>
+  <ul>
+    <li>啟用 Face ID 解鎖時，主密碼存在這台裝置的 Keychain，以 Face ID 保護，不會同步到其他裝置。</li>
+    <li>Face ID 的驗證由 iOS 執行。App 只收到成功或失敗的結果，取得不到生物辨識資料。</li>
+    <li>裝置的 Face ID 資料變更後（例如重設 Face ID 或新增外觀），存的主密碼失效，需要重新輸入主密碼。</li>
+  </ul>
+
+  <h2>自動填寫</h2>
+  <ul>
+    <li>自動填寫在裝置上讀取與解密資料庫，本身不連線網路。</li>
+    <li>App 配對：你在某個 App 的登入畫面選過的項目，App 在裝置上記住該 App 的 bundle ID、顯示名稱與項目 UUID，不存帳號、密碼或項目標題。你可以在 App 的設定中移除配對。</li>
+    <li>鍵盤上方的建議：App 在每次解鎖或存檔後，把項目的網域與使用者名稱（沒有使用者名稱時用項目標題）交給 iOS 顯示建議。passkey 另含 credential ID 與 user handle。這些資訊不含密碼、驗證碼與私鑰。這項功能預設開啟，可以在 App 的設定關閉。</li>
+  </ul>
+
+  <h2>相機與照片</h2>
+  <ul>
+    <li>相機只用來掃描兩步驟驗證的 QR code。</li>
+    <li>照片透過 iOS 的照片選擇器取得你選的那一張，App 不需要存取整個相簿。</li>
+    <li>影像在裝置上辨識，App 不保存影像。</li>
+  </ul>
+
+  <h2>剪貼簿</h2>
+  <p>你從 KeyDBX 複製的內容只留在這台裝置，不經接續互通的「通用剪貼板」同步到其他裝置，60 秒後由 iOS 清除。</p>
+
+  <h2>裝置上的診斷資訊</h2>
+  <ul>
+    <li>設定畫面顯示的解鎖各階段耗時存在裝置上，只含時間、讀取來源、檔案大小、各階段秒數與金鑰衍生函式（KDF）的參數摘要。</li>
+    <li>App 寫入 iOS 系統紀錄的訊息不含密碼、金鑰、驗證碼或 Dropbox token。</li>
+    <li>這些資訊都不會傳送給開發者。</li>
+  </ul>
+
+  <h2>這個網站</h2>
+  <ul>
+    <li>網站由 Cloudflare Pages 託管。Cloudflare 可能記錄存取紀錄，例如 IP 位址，適用 <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare 的隱私政策</a>。</li>
+    <li>網站本身不設定 cookie，沒有分析、追蹤或 JavaScript，也不載入其他網站的資源。Cloudflare 的安全防護功能可能設定它自己的 cookie。</li>
+  </ul>
+
+  <h2>回報問題</h2>
+  <ul>
+    <li>問題回報使用 GitHub Issues。Issue 的內容是公開的，任何人都能看到。GitHub 處理你的帳號與回報內容，適用 <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub 的隱私聲明</a>。</li>
+    <li>不要在 Issue 貼上密碼、資料庫檔、主密碼、金鑰檔或 TOTP 密鑰。</li>
+    <li>在 GitHub 上的回報適用 GitHub 的隱私聲明。</li>
+  </ul>
+
+  <h2>聯絡</h2>
+  <ul>
+    <li>一般問題：<a href="https://github.com/Hank076/KeyDBX/issues">GitHub Issues</a>。</li>
+    <li>安全問題：使用 GitHub 的<a href="https://github.com/Hank076/KeyDBX/security/advisories/new">私下漏洞回報</a>（Security → Report a vulnerability），不要開公開的 Issue。</li>
+  </ul>
+
+  <h2>政策變更</h2>
+  <p>本政策修改時，更新這一頁與生效日期。</p>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass、KeePassXC、Dropbox、Apple、iPhone、iCloud 與 Face ID 是各自擁有者的商標。KeyDBX 與這些擁有者沒有關聯。</p>
+    <p><a href="/">介紹</a> · <a href="/support/">支援</a> · <a href="/en/privacy/" lang="en" hreflang="en">English</a></p>
+  </div>
+</footer>
+</body>
+</html>

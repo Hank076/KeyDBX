@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>支援 — KeyDBX</title>
+<meta name="description" content="KeyDBX 的常見問題、問題回報方式與安全問題的私下回報方式。">
+<link rel="canonical" href="https://keydbx.hankchen.info/support/">
+<link rel="alternate" hreflang="zh-Hant-TW" href="https://keydbx.hankchen.info/support/">
+<link rel="alternate" hreflang="en" href="https://keydbx.hankchen.info/en/support/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">KeyDBX</a>
+    <nav class="site" aria-label="網站">
+      <ul>
+        <li><a href="/">介紹</a></li>
+        <li><a href="/privacy/">隱私政策</a></li>
+        <li><a href="/support/" aria-current="page">支援</a></li>
+        <li><a href="/en/support/" lang="en" hreflang="en">English</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>支援</h1>
+  <p class="lead">先看常見問題。找不到答案時，在 GitHub 回報問題。</p>
+
+  <h2>常見問題</h2>
+
+  <details>
+    <summary>怎麼用 KeyDBX 自動填寫密碼？</summary>
+    <p>開啟 iPhone 的「設定 &gt; 一般 &gt; 自動填寫與密碼」，選擇 KeyDBX。之後在登入欄位點選密碼建議，或從鍵盤上方的建議列選擇帳號。</p>
+  </details>
+
+  <details>
+    <summary>怎麼開啟 Dropbox 上的資料庫？</summary>
+    <ol>
+      <li>在 KeyDBX 的解鎖畫面點選「選取」，再選「從 Dropbox 選取」。</li>
+      <li>登入 Dropbox 並允許 KeyDBX 存取。</li>
+      <li>把 <code>.kdbx</code> 檔放進 Dropbox 的 <code>Apps</code> 資料夾中 KeyDBX 的資料夾。</li>
+      <li>在 KeyDBX 的 Dropbox 清單中選擇這個檔案。</li>
+    </ol>
+    <p>KeyDBX 只能存取自己的 App 資料夾。其他位置的檔案，請改用「從『檔案』選取」，經 Dropbox App 開啟。</p>
+  </details>
+
+  <details>
+    <summary>Dropbox 上多了一個衝突副本，怎麼辦？</summary>
+    <p>同一個資料庫在兩個地方都被修改時，KeyDBX 不覆蓋 Dropbox 上的版本。Dropbox 把 KeyDBX 的版本存成另一個檔名。請在電腦上以 KeePass 或 KeePassXC 開啟兩個檔案並合併，再到 KeyDBX 的設定按「知道了」。</p>
+  </details>
+
+  <details>
+    <summary>沒有網路時可以使用嗎？</summary>
+    <p>可以。Dropbox 的資料庫會以這台裝置上次同步的版本解鎖，可以編輯與存檔。回到 App 或在設定按「立即同步」時，KeyDBX 上傳變更。</p>
+  </details>
+
+  <details>
+    <summary>KeyDBX 打不開我的資料庫。</summary>
+    <p>KeyDBX 支援 KDBX 4.0 與 4.1。KDBX 3.1 與 KeePass 1.x 的資料庫請先在電腦上的 KeePass 或 KeePassXC 轉成 KDBX 4 格式。錯誤訊息會說明失敗的階段，回報問題時請附上完整的錯誤訊息。</p>
+  </details>
+
+  <details>
+    <summary>忘記主密碼可以找回嗎？</summary>
+    <p>不行。資料庫以你的主密碼加密，開發者沒有你的資料，也沒有復原機制。</p>
+  </details>
+
+  <details>
+    <summary>Face ID 解鎖突然要我輸入主密碼。</summary>
+    <p>裝置的 Face ID 資料變更後（例如重設 Face ID 或新增外觀），KeyDBX 保存的主密碼會失效。輸入一次主密碼後，Face ID 解鎖恢復可用。</p>
+  </details>
+
+  <details>
+    <summary>自動填寫顯示「使用 AutoFill 副本」。</summary>
+    <p>原檔暫時無法讀取時（例如離線），自動填寫改用裝置上的加密副本，並顯示副本的更新時間。副本在每次解鎖或存檔後更新。開啟 KeyDBX 解鎖一次即可更新副本。</p>
+  </details>
+
+  <details>
+    <summary>在自動填寫存的新密碼沒有出現在資料庫。</summary>
+    <p>自動填寫無法立即寫回原檔時（例如離線），新密碼與 passkey 暫存在裝置上。下次在 KeyDBX 解鎖資料庫時，App 把暫存的變更寫入資料庫。暫存的內容列在 KeyDBX 設定的「同步與暫存」。</p>
+  </details>
+
+  <details>
+    <summary>複製的密碼去哪裡了？</summary>
+    <p>複製的內容只留在這台裝置，60 秒後自動清除，不會同步到你的其他裝置。</p>
+  </details>
+
+  <details>
+    <summary>螢幕錄影時看不到密碼。</summary>
+    <p>螢幕錄影、鏡像或 AirPlay 時，KeyDBX 隱藏密碼與驗證碼。停止錄影或鏡像後即可顯示。</p>
+  </details>
+
+  <details>
+    <summary>怎麼切換介面語言？</summary>
+    <p>在 KeyDBX 的「設定 › 語言」選擇。預設跟隨系統語言。</p>
+  </details>
+
+  <h2>回報問題</h2>
+  <div class="notice">
+    <p><strong>Issue 是公開的。</strong>不要貼上密碼、資料庫檔、主密碼、金鑰檔或 TOTP 密鑰。截圖前先確認畫面上沒有這些內容。</p>
+  </div>
+  <p>請提供：</p>
+  <ul>
+    <li>KeyDBX 版本、iOS 版本與裝置型號。</li>
+    <li>資料庫的位置：「檔案」、iCloud Drive、在 KeyDBX 登入的 Dropbox，或經「檔案」App 開啟的 Dropbox。</li>
+    <li>重現步驟、預期結果與實際結果。</li>
+    <li>錯誤訊息的全文。錯誤訊息只含階段、位置與錯誤碼等資訊，不含密碼。</li>
+  </ul>
+  <p><a class="button" href="https://github.com/Hank076/KeyDBX/issues/new/choose">在 GitHub 回報問題</a></p>
+  <p class="meta">回報需要 GitHub 帳號。</p>
+
+  <h2>安全問題</h2>
+  <p>發現安全漏洞時，不要開公開的 Issue。請使用 GitHub 的私下漏洞回報，內容只有開發者看得到：</p>
+  <ol>
+    <li>開啟 <a href="https://github.com/Hank076/KeyDBX/security/advisories/new">私下漏洞回報</a>（repo 的 Security → Report a vulnerability）。</li>
+    <li>說明影響、重現步驟與受影響的版本。</li>
+    <li>需要資料庫才能重現時，建立只含測試資料的資料庫，不要附上真實的資料庫。</li>
+  </ol>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>KeePass、KeePassXC、Dropbox、Apple、iPhone、iCloud 與 Face ID 是各自擁有者的商標。KeyDBX 與這些擁有者沒有關聯。</p>
+    <p><a href="/">介紹</a> · <a href="/privacy/">隱私政策</a> · <a href="/en/support/" lang="en" hreflang="en">English</a></p>
+  </div>
+</footer>
+</body>
+</html>
