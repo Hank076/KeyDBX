@@ -13,7 +13,8 @@
 - 網站檔案只放在 `site/`：Cloudflare Pages 只發布這個目錄，repo 的其他檔案（開發文件、腳本）不會出現在網站上。
 - 頁面只用靜態 HTML 與 `site/assets/site.css`，不用 JavaScript，也不載入任何外部資源（字型、CDN、分析、追蹤、嵌入）：`/dropbox/oauth/` 的網址帶有 OAuth 授權碼，外部資源可能把網址送出去；隱私政策也承諾網站不追蹤。
 - 每頁保留 `<meta name="referrer" content="no-referrer">` 與 Content-Security-Policy meta（`default-src 'none'; style-src 'self'; img-src 'self'`），`site/_headers` 也對所有路徑送出相同的 CSP 與 `Referrer-Policy: no-referrer`：瀏覽器因此擋下 script 與外部資源，點出站外連結時也不送出網址。meta 在本機預覽時也生效，header 另外涵蓋 meta 做不到的 `frame-ancestors`。
-- 不得開啟 Cloudflare 會注入 script 的功能（Pages 的 Web Analytics、Email Address Obfuscation、Rocket Loader）：網站承諾不使用 JavaScript，而且 `/dropbox/oauth/` 的網址帶有授權碼。
+- CSP 不得加入 `script-src`，也不得使用 `unsafe-inline` 或 `unsafe-eval`：Cloudflare 免費方案的 JavaScript Detections 對整個 `hankchen.info` 網域開啟，無法只對這個子網域關閉，它注入的 inline script 只靠 CSP 擋下；放寬後注入的 script 就會執行，而 `/dropbox/oauth/` 的網址帶有授權碼。
+- 不得開啟其他會注入 script 的 Cloudflare 功能（Web Analytics、Email Address Obfuscation、Rocket Loader）：網站承諾不使用 JavaScript，隱私政策也承諾沒有分析。Web Analytics 只對瀏覽器的 User-Agent 注入，檢查方式見 README「驗證檔檢查」。
 - `site/dropbox/oauth/index.html` 不得讀取或顯示網址參數，並保留 `noindex`；`site/_headers` 對這個路徑送出 `Cache-Control: no-store`：網址參數是 OAuth 授權碼。
 - `site/_headers` 保留驗證檔的 `Content-Type: application/json`：驗證檔沒有副檔名，iOS 要求以 JSON 回應。
 - `site/.well-known/apple-app-site-association` 的 Team ID（`MGH5T96U79`）與 bundle ID（`com.hank.KeyDBX`）必須與 App repo 的 `project.pbxproj` 一致：不一致時 iOS 不承認這個網域。

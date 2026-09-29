@@ -224,8 +224,12 @@ def check_headers():
     if aasa.get("content-type") != "application/json":
         error("site/_headers", "驗證檔應設定 Content-Type: application/json")
     every = rules.get("/*", {})
-    if "default-src 'none'" not in every.get("content-security-policy", ""):
+    csp = every.get("content-security-policy", "")
+    if "default-src 'none'" not in csp:
         error("site/_headers", "/* 應設定 Content-Security-Policy（default-src 'none'）")
+    # Cloudflare 的 JavaScript Detections 注入 inline script，只靠 CSP 擋下。
+    if "script-src" in csp or "unsafe" in csp:
+        error("site/_headers", "CSP 不得放行 script（script-src、unsafe-inline、unsafe-eval）")
     if every.get("referrer-policy") != "no-referrer":
         error("site/_headers", "/* 應設定 Referrer-Policy: no-referrer")
     oauth = rules.get("/dropbox/oauth/*", {})
