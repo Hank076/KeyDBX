@@ -1,6 +1,6 @@
 # KeyDBX 網站
 
-這個 repo 只放 KeyDBX 的網站與問題回報，不含 App 原始碼。網站由 Cloudflare Pages 從 `main` 分支部署，只發布 `site/` 目錄，網址為 <https://keydbx.hankchen.info/>。
+這個 repo 只放 KeyDBX 的網站與問題回報，不含 App 原始碼。網站由 Cloudflare Pages 從 `main` 分支部署，只發布 `site/` 目錄，網址為 <https://keydbx.lab076.dev/>。
 
 ## 網址
 
@@ -60,8 +60,8 @@ DNS 在 Cloudflare。推送到 `main` 會直接部署到正式網站；其他分
    - **Framework preset**：None
    - **Build command**：留空
    - **Build output directory**：`site`
-3. 部署完成後，在專案的 **Custom domains** 加入 `keydbx.hankchen.info`。DNS 已有 `keydbx` 的舊 CNAME（指向 `hank076.github.io`）時，先刪除它，再讓 Pages 建立新的紀錄。
-4. 關閉這個網站的 **Web Analytics**：在 Pages 專案的 **Metrics** 頁關閉 Web Analytics；帳號的 **Web Analytics** 清單中若有 `keydbx.hankchen.info`，也一併刪除或停用自動設定。它會對瀏覽器注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入）。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們會在頁面注入 script。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個 `hankchen.info` 網域開關，所以保留開啟，由網站的 CSP 擋下它執行。
+3. 部署完成後，在專案的 **Custom domains** 加入 `keydbx.lab076.dev`。DNS 已有 `keydbx` 的舊 CNAME（指向 `hank076.github.io`）時，先刪除它，再讓 Pages 建立新的紀錄。
+4. 關閉這個網站的 **Web Analytics**：在 Pages 專案的 **Metrics** 頁關閉 Web Analytics；帳號的 **Web Analytics** 清單中若有 `keydbx.lab076.dev`，也一併刪除或停用自動設定。它會對瀏覽器注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入）。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們會在頁面注入 script。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個 `lab076.dev` 網域開關，所以保留開啟，由網站的 CSP 擋下它執行。
 5. 確認 **Bot Fight Mode** 與 challenge 規則不會擋下 `/.well-known/*`。擋下時，Apple CDN 取不到驗證檔。
 6. 在 GitHub repo 的 **Settings → Security**（Code security）開啟 **Private vulnerability reporting**。
 
@@ -70,25 +70,25 @@ DNS 在 Cloudflare。推送到 `main` 會直接部署到正式網站；其他分
 確認回應為 200、`content-type: application/json`，而且沒有轉址：
 
 ```bash
-curl -sI https://keydbx.hankchen.info/.well-known/apple-app-site-association
+curl -sI https://keydbx.lab076.dev/.well-known/apple-app-site-association
 ```
 
 確認正式網站送出的 CSP 沒有放行 script（結果應為 0）。頁面原始碼中的 JavaScript Detections script 會被這個 CSP 擋下：
 
 ```bash
-curl -sI https://keydbx.hankchen.info/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c -i -e "script-src" -e "unsafe"
+curl -sI https://keydbx.lab076.dev/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c -i -e "script-src" -e "unsafe"
 ```
 
 確認沒有被注入 Web Analytics（結果應為 0）。要帶瀏覽器的 User-Agent，Cloudflare 才會注入：
 
 ```bash
-curl -s -A "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1" -H "Accept: text/html" https://keydbx.hankchen.info/ | grep -c cloudflareinsights
+curl -s -A "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1" -H "Accept: text/html" https://keydbx.lab076.dev/ | grep -c cloudflareinsights
 ```
 
 確認 Apple CDN 取得的內容與 `site/.well-known/apple-app-site-association` 相同：
 
 ```bash
-curl https://app-site-association.cdn-apple.com/a/v1/keydbx.hankchen.info
+curl https://app-site-association.cdn-apple.com/a/v1/keydbx.lab076.dev
 ```
 
 Apple CDN 會快取驗證檔。修改後要等 CDN 更新，才會反映在上面的結果。

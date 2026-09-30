@@ -14,7 +14,7 @@ from urllib.parse import urlsplit
 
 REPO = Path(__file__).resolve().parent.parent
 ROOT = REPO / "site"
-SITE_HOST = "keydbx.hankchen.info"
+SITE_HOST = "keydbx.lab076.dev"
 
 # 允許的站外連結前綴。新增站外連結時，先確認它不會載入資源，再加進這裡。
 ALLOWED_EXTERNAL_PREFIXES = (
@@ -33,7 +33,7 @@ VOID_ELEMENTS = {
 }
 
 EXPECTED_CSP = "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
-EXPECTED_AASA = {"webcredentials": {"apps": ["MGH5T96U79.com.hank.KeyDBX"]}}
+EXPECTED_AASA = {"webcredentials": {"apps": ["NQ5QFN5794.dev.lab076.KeyDBX"]}}
 
 # 中英成對的頁面：(正體中文, 英文)
 PAGE_PAIRS = [

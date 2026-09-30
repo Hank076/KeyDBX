@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/Hank076/KeyDBX/security/advisories/new
     about: 私下回報安全問題，不要開公開的 Issue。· Report security issues privately. Do not open a public issue.
   - name: 常見問題 · FAQ
-    url: https://keydbx.hankchen.info/support/
+    url: https://keydbx.lab076.dev/support/
     about: 回報前先看常見問題。· Check the frequently asked questions before you report.
