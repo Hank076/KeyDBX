@@ -60,8 +60,8 @@ DNS 在 Cloudflare。推送到 `main` 會直接部署到正式網站；其他分
    - **Framework preset**：None
    - **Build command**：留空
    - **Build output directory**：`site`
-3. 部署完成後，在專案的 **Custom domains** 加入 `keydbx.lab076.dev`。DNS 已有 `keydbx` 的舊 CNAME（指向 `hank076.github.io`）時，先刪除它，再讓 Pages 建立新的紀錄。
-4. 關閉這個網站的 **Web Analytics**：在 Pages 專案的 **Metrics** 頁關閉 Web Analytics；帳號的 **Web Analytics** 清單中若有 `keydbx.lab076.dev`，也一併刪除或停用自動設定。它會對瀏覽器注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入）。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們會在頁面注入 script。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個 `lab076.dev` 網域開關，所以保留開啟，由網站的 CSP 擋下它執行。
+3. 部署完成後，在專案的 **Custom domains** 加入 `keydbx.lab076.dev`。DNS 已有 `keydbx` 的其他紀錄時，先刪除它，再讓 Pages 建立新的紀錄。
+4. 關閉這個網站的 **Web Analytics**：在 Pages 專案的 **Metrics** 頁關閉 Web Analytics；帳號的 **Web Analytics** 清單中若有 `keydbx.lab076.dev`，也一併刪除或停用自動設定。它會對瀏覽器注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入）。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們會在頁面注入 script。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個網域開關，所以不論 `lab076.dev` 是否開啟，都由網站的 CSP 擋下它執行。
 5. 確認 **Bot Fight Mode** 與 challenge 規則不會擋下 `/.well-known/*`。擋下時，Apple CDN 取不到驗證檔。
 6. 在 GitHub repo 的 **Settings → Security**（Code security）開啟 **Private vulnerability reporting**。
 
