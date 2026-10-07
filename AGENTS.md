@@ -14,7 +14,7 @@
 - `site/.well-known/apple-app-site-association` 的 Team ID（`NQ5QFN5794`）與 bundle ID（`dev.lab076.KeyDBX`）必須與 App 的 `KeyDBX.xcodeproj/project.pbxproj` 一致：不一致時 iOS 不承認這個網域。
 - 中文頁與英文頁的內容必須同步：同一份政策或說明不能有兩種內容。修改一頁時，同時修改另一種語言的對應頁。
 - 隱私政策、介紹頁與支援頁的每一項敘述，都要能對照 App repo 的程式或文件：隱私政策是對使用者的承諾。
-- 開發用的文件（待辦與交接 `docs/handover.md`、踩坑紀錄等）放在 `docs/`，只留在本機，不提交（`web/.gitignore`）：公開 repo 會包含 `web/` 的所有提交檔案。
+- 網站的待辦與踩坑紀錄寫進 App repo 根目錄的 `docs/handover.md` 與 `docs/project_postmortem.md`，不放進 `web/`：公開 repo 會包含 `web/` 的所有提交檔案。`web/.gitignore` 排除 `docs/`，防止誤提交。
 - Issue 表單最上方保留隱私警語（不要貼密碼、資料庫、主密碼、金鑰檔、TOTP 密鑰）：Issue 是公開的。
 - 站內連結用以 `/` 開頭的絕對路徑：`404.html` 會回應任何深度的不存在路徑，相對路徑在那裡會失效。
 - 提到 KeePass、KeePassXC、Dropbox、Apple 的頁面保留商標聲明，不使用它們的 logo。
