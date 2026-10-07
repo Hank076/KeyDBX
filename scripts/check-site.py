@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""檢查 KeyDBX 網站的靜態檔案（`site/`，Cloudflare Pages 的輸出目錄）。在 repo 根目錄執行：python3 scripts/check-site.py
+"""檢查 KeyDBX 網站的靜態檔案（`site/`，Cloudflare Pages 的輸出目錄）。在 App repo 根目錄執行：python3 web/scripts/check-site.py
 
 有任何錯誤時以結束碼 1 結束。每則錯誤包含檔案路徑與原因。
 """

@@ -1,6 +1,6 @@
 # KeyDBX 網站
 
-這個 repo 只放 KeyDBX 的網站與問題回報，不含 App 原始碼。網站由 Cloudflare Pages 從 `main` 分支部署，只發布 `site/` 目錄，網址為 <https://keydbx.lab076.dev/>。
+這個 repo 只放 KeyDBX 的網站與問題回報，不含 App 原始碼。內容來自 App repo 的 `web/` 目錄，以 `git subtree push --prefix=web site main` 推送到這個 repo。網站由 Cloudflare Pages 從 `main` 分支部署，只發布 `site/` 目錄，網址為 <https://keydbx.lab076.dev/>。
 
 ## 網址
 
@@ -36,6 +36,8 @@
 
 ## 本機預覽
 
+在 `web/` 目錄執行：
+
 ```bash
 python3 -m http.server 8000 --directory site
 ```
@@ -44,8 +46,10 @@ python3 -m http.server 8000 --directory site
 
 ## 檢查
 
+在 App repo 根目錄執行：
+
 ```bash
-python3 scripts/check-site.py
+python3 web/scripts/check-site.py
 ```
 
 檢查項目：HTML 標籤成對、站內連結指向存在的檔案、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang` 與 `referrer`、`_headers` 的必要規則、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
