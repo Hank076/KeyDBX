@@ -52,7 +52,7 @@ python3 -m http.server 8000 --directory site
 python3 web/scripts/check-site.py
 ```
 
-檢查項目：HTML 標籤成對、站內連結指向存在的檔案、所有頁面的 stylesheet 網址相同且帶 `?v=` 版本參數、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang` 與 `referrer`、`_headers` 的必要規則、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
+檢查項目：HTML 標籤成對、站內連結指向存在的檔案、所有頁面的 stylesheet 網址相同且帶 `?v=` 版本參數、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang`、`referrer` 與 CSP meta（`/dropbox/oauth/` 與 `404.html` 用不放行 script 的嚴格版，其他頁放行 Web Analytics）、`_headers` 的必要規則（`/*` 的 `script-src` 只有 `https://static.cloudflareinsights.com`、不含 `unsafe`，`/dropbox/oauth/*` 另有嚴格的 CSP，不使用 detach 語法 `! Header`）、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
 
 ## Cloudflare Pages 設定
 
@@ -65,7 +65,7 @@ DNS 在 Cloudflare。推送到 `main` 會直接部署到正式網站；其他分
    - **Build command**：留空
    - **Build output directory**：`site`
 3. 部署完成後，在專案的 **Custom domains** 加入 `keydbx.lab076.dev`。DNS 已有 `keydbx` 的其他紀錄時，先刪除它，再讓 Pages 建立新的紀錄。
-4. 關閉這個網站的 **Web Analytics**：在 Pages 專案的 **Metrics** 頁關閉 Web Analytics；帳號的 **Web Analytics** 清單中若有 `keydbx.lab076.dev`，也一併刪除或停用自動設定。它會對瀏覽器注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入）。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們會在頁面注入 script。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個網域開關，所以不論 `lab076.dev` 是否開啟，都由網站的 CSP 擋下它執行。
+4. **Web Analytics** 可以在 Pages 專案的 **Metrics** 頁開啟。開啟後，Cloudflare 對瀏覽器的 User-Agent 在頁面注入 `static.cloudflareinsights.com/beacon.min.js`（`curl` 預設的 User-Agent 不會被注入），網站的 CSP 放行這個 script 與它送出統計的連線；`/dropbox/oauth/` 與 `404.html` 的 CSP 不放行，beacon 在這兩頁不執行。在網域的設定關閉 **Email Address Obfuscation** 與 **Rocket Loader**：它們注入的 script 不在 CSP 放行範圍內。Bot Fight Mode 的 **JavaScript Detections** 也會注入 script（載入 `/cdn-cgi/challenge-platform/scripts/jsd/main.js`），但免費方案只能對整個網域開關，所以不論 `lab076.dev` 是否開啟，都由網站的 CSP 擋下它執行。
 5. 確認 **Bot Fight Mode** 與 challenge 規則不會擋下 `/.well-known/*`。擋下時，Apple CDN 取不到驗證檔。
 6. 在 GitHub repo 的 **Settings → Security**（Code security）開啟 **Private vulnerability reporting**。
 
@@ -77,17 +77,38 @@ DNS 在 Cloudflare。推送到 `main` 會直接部署到正式網站；其他分
 curl -sI https://keydbx.lab076.dev/.well-known/apple-app-site-association
 ```
 
-確認正式網站送出的 CSP 沒有放行 script（結果應為 0）。頁面原始碼中的 JavaScript Detections script 會被這個 CSP 擋下：
+確認一般頁面的 CSP 只放行 Web Analytics 的 script。結果應為一行 `script-src https://static.cloudflareinsights.com`：
 
 ```bash
-curl -sI https://keydbx.lab076.dev/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c -i -e "script-src" -e "unsafe"
+curl -sI https://keydbx.lab076.dev/ | grep -i "^content-security-policy" | grep -o "script-src [^;]*"
 ```
 
-確認沒有被注入 Web Analytics（結果應為 0）。要帶瀏覽器的 User-Agent，Cloudflare 才會注入：
+確認一般頁面的 CSP 沒有 `unsafe-inline`、`unsafe-eval`（結果應為 0）。頁面原始碼中的 JavaScript Detections script 會被這個 CSP 擋下：
 
 ```bash
-curl -s -A "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1" -H "Accept: text/html" https://keydbx.lab076.dev/ | grep -c cloudflareinsights
+curl -sI https://keydbx.lab076.dev/ | grep -i "^content-security-policy" | grep -c -i "unsafe"
 ```
+
+確認 Web Analytics 的 beacon 來自 `static.cloudflareinsights.com`。要帶瀏覽器的 User-Agent，Cloudflare 才會注入。結果應為一行，開頭是 `src="https://static.cloudflareinsights.com/beacon.min.js`（引號可能是單引號）；沒有輸出代表 Web Analytics 沒有開啟：
+
+```bash
+curl -s -A "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1" -H "Accept: text/html" https://keydbx.lab076.dev/ | grep -Eo "src=[\"'][^\"']*beacon\.min\.js"
+```
+
+確認 Dropbox 回呼頁送出不放行 script 的嚴格 CSP（結果應為 1）。Pages 把 `/*` 與 `/dropbox/oauth/*` 的 CSP 以逗號串接在同一個 header，瀏覽器同時套用兩個 policy：
+
+```bash
+curl -sI https://keydbx.lab076.dev/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+```
+
+部署後在瀏覽器確認 Web Analytics 有送出資料：
+
+1. 用桌面版 Safari 或 Chrome 開啟 <https://keydbx.lab076.dev/>。
+2. 開啟開發者工具的 **Network**（網路）分頁，重新載入頁面。
+3. 確認 `beacon.min.js` 載入成功，而且送往 `/cdn-cgi/rum`（或 `https://cloudflareinsights.com/cdn-cgi/rum`）的請求回應 2xx。**Console** 不應出現 CSP 擋下 beacon 的錯誤。
+4. 到 Cloudflare dashboard 的 **Web Analytics**，確認 `keydbx.lab076.dev` 有資料。
+
+`/cdn-cgi/rum` 的請求失敗或 dashboard 收不到資料時，先檢查 `Referrer-Policy: no-referrer`：Cloudflare 的 Web Analytics FAQ 寫明 `Referer` header 是必要的；beacon 以 CORS 送出時仍帶 `Origin` header。調整 `Referrer-Policy` 時只放寬一般頁面，`/dropbox/oauth/` 與 `404.html` 維持 `no-referrer`。
 
 確認 Apple CDN 取得的內容與 `site/.well-known/apple-app-site-association` 相同：
 

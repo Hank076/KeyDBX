@@ -32,7 +32,18 @@ VOID_ELEMENTS = {
     "link", "meta", "source", "track", "wbr",
 }
 
-EXPECTED_CSP = "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+# 一般頁面放行 Cloudflare Web Analytics 的 beacon；/dropbox/oauth/ 的網址帶授權碼，不放行任何 script。
+ANALYTICS_SCRIPT_SRC = "https://static.cloudflareinsights.com"
+EXPECTED_CSP_ANALYTICS = (
+    f"default-src 'none'; script-src {ANALYTICS_SCRIPT_SRC}; "
+    "connect-src 'self' https://cloudflareinsights.com; "
+    "style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+)
+EXPECTED_CSP_STRICT = "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+# 404.html 也用嚴格版：_headers 的路徑比對分大小寫，/Dropbox/OAuth/?code=… 由 404 回應且只套用 /*。
+STRICT_CSP_PAGES = {"dropbox/oauth/index.html", "404.html"}
+# _headers 另外涵蓋 meta 做不到的 frame-ancestors。
+FRAME_ANCESTORS = "; frame-ancestors 'none'"
 EXPECTED_AASA = {"webcredentials": {"apps": ["NQ5QFN5794.dev.lab076.KeyDBX"]}}
 
 # 中英成對的頁面：(正體中文, 英文)
@@ -167,8 +178,9 @@ def check_html(path):
     metas = {m.get("name") or m.get("http-equiv"): m.get("content") for m in parser.metas}
     if metas.get("referrer") != "no-referrer":
         error(rel, f"缺少 <meta name=\"referrer\" content=\"no-referrer\">，實得 {metas.get('referrer')!r}")
-    if metas.get("Content-Security-Policy") != EXPECTED_CSP:
-        error(rel, f"CSP meta 應為 {EXPECTED_CSP!r}，實得 {metas.get('Content-Security-Policy')!r}")
+    expected_csp = EXPECTED_CSP_STRICT if rel in STRICT_CSP_PAGES else EXPECTED_CSP_ANALYTICS
+    if metas.get("Content-Security-Policy") != expected_csp:
+        error(rel, f"CSP meta 應為 {expected_csp!r}，實得 {metas.get('Content-Security-Policy')!r}")
 
     for tag, attr, value in parser.links:
         check_link(rel, tag, attr, value)
@@ -224,16 +236,30 @@ def check_aasa():
         error(rel, f"內容應為 {json.dumps(EXPECTED_AASA)}，實得 {json.dumps(data)}")
 
 
+def csp_directives(csp):
+    """把 CSP 字串拆成 {directive: 來源字串}。"""
+    directives = {}
+    for part in csp.split(";"):
+        tokens = part.split()
+        if tokens:
+            directives[tokens[0].lower()] = " ".join(tokens[1:])
+    return directives
+
+
 def check_headers():
-    """`site/_headers`：驗證檔以 application/json 回應，所有頁面帶 CSP 與 no-referrer。"""
+    """`site/_headers`：驗證檔以 application/json 回應，所有頁面帶 CSP 與 no-referrer，/dropbox/oauth/* 另帶嚴格的 CSP。"""
     path = ROOT / "_headers"
     if not path.is_file():
         error("site/_headers", "檔案不存在")
         return
     rules = {}
     current = None
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        # `! Header` 會移除前面規則設定的 header（detach），可能拿掉嚴格的 CSP。
+        if line[0].isspace() and line.lstrip().startswith("!"):
+            error("site/_headers", f"第 {number} 行不得使用 detach 語法（! Header）：{line.strip()!r}")
             continue
         if not line[0].isspace():
             current = line.strip()
@@ -246,16 +272,35 @@ def check_headers():
         error("site/_headers", "驗證檔應設定 Content-Type: application/json")
     every = rules.get("/*", {})
     csp = every.get("content-security-policy", "")
-    if "default-src 'none'" not in csp:
-        error("site/_headers", "/* 應設定 Content-Security-Policy（default-src 'none'）")
-    # Cloudflare 的 JavaScript Detections 注入 inline script，只靠 CSP 擋下。
-    if "script-src" in csp or "unsafe" in csp:
-        error("site/_headers", "CSP 不得放行 script（script-src、unsafe-inline、unsafe-eval）")
+    expected = EXPECTED_CSP_ANALYTICS + FRAME_ANCESTORS
+    if csp != expected:
+        error("site/_headers", f"/* 的 Content-Security-Policy 應為 {expected!r}，實得 {csp!r}")
+    directives = csp_directives(csp)
+    if directives.get("default-src") != "'none'":
+        error("site/_headers", f"/* 的 CSP 應有 default-src 'none'，實得 {directives.get('default-src')!r}")
+    # Cloudflare 的 JavaScript Detections 注入 inline script 與 /cdn-cgi/challenge-platform/ script，只靠 CSP 擋下。
+    if directives.get("script-src") != ANALYTICS_SCRIPT_SRC:
+        error(
+            "site/_headers",
+            f"/* 的 CSP script-src 應只有 {ANALYTICS_SCRIPT_SRC!r}，實得 {directives.get('script-src')!r}",
+        )
+    if "unsafe" in csp:
+        error("site/_headers", f"/* 的 CSP 不得含 unsafe-*，實得 {csp!r}")
     if every.get("referrer-policy") != "no-referrer":
         error("site/_headers", "/* 應設定 Referrer-Policy: no-referrer")
     oauth = rules.get("/dropbox/oauth/*", {})
     if oauth.get("cache-control") != "no-store":
         error("site/_headers", "/dropbox/oauth/* 應設定 Cache-Control: no-store")
+    # 這條與 /* 的 CSP 同時生效（取交集），網址帶授權碼的回呼頁因此不執行任何 script。
+    oauth_csp = oauth.get("content-security-policy")
+    oauth_expected = EXPECTED_CSP_STRICT + FRAME_ANCESTORS
+    if oauth_csp is None:
+        error("site/_headers", f"/dropbox/oauth/* 缺少 Content-Security-Policy，應為 {oauth_expected!r}")
+    elif oauth_csp != oauth_expected:
+        error(
+            "site/_headers",
+            f"/dropbox/oauth/* 的 Content-Security-Policy 應為 {oauth_expected!r}，實得 {oauth_csp!r}",
+        )
 
 
 def check_css():

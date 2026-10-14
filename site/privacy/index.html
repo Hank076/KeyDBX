@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="color-scheme" content="light dark">
 <title>隱私政策 — KeyDBX</title>
 <meta name="description" content="KeyDBX 不收集你的資料。資料庫只存在你的裝置與你選擇的儲存位置，解密只在裝置上進行。">
@@ -31,17 +31,17 @@
 <main>
   <div class="page-head">
     <div class="wrap">
-      <p class="meta">生效日期：2026 年 9 月 29 日</p>
+      <p class="meta">生效日期：2026 年 10 月 14 日</p>
       <h1>隱私政策</h1>
-      <p class="lead">KeyDBX 不收集你的資料。開發者看不到你的資料庫、密碼或使用情形。</p>
+      <p class="lead">KeyDBX 不收集你的資料。開發者看不到你的資料庫、密碼或 App 的使用情形。</p>
     </div>
   </div>
 
   <div class="wrap page-layout">
     <ul class="highlights">
       <li>
-        <p class="highlight-title">不收集資料</p>
-        <p class="highlight-text">沒有分析、廣告、追蹤或第三方 SDK。</p>
+        <p class="highlight-title">App 不收集資料</p>
+        <p class="highlight-text">App 沒有分析、廣告、追蹤或第三方 SDK。</p>
       </li>
       <li>
         <p class="highlight-title">開發者沒有伺服器</p>
@@ -148,7 +148,8 @@
         <h2>這個網站</h2>
         <ul>
           <li>網站由 Cloudflare Pages 託管。Cloudflare 可能記錄存取紀錄，例如 IP 位址，適用 <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare 的隱私政策</a>。</li>
-          <li>網站的頁面不設定 cookie，沒有分析或追蹤，不使用 JavaScript，也不載入其他網站的資源。</li>
+          <li>網站使用 Cloudflare Web Analytics 統計瀏覽情形。Cloudflare 在頁面加入它的 script，收集頁面載入的效能資料，以及國家、網址路徑、來源網站、裝置類型、瀏覽器與作業系統等統計資訊。依 Cloudflare 的說明，它不記錄網址的查詢字串，也不收集訪客的個人資料。Dropbox 登入的回呼頁不執行這段 script。</li>
+          <li>網站的頁面不設定 cookie，網站本身不使用 JavaScript，除了 Cloudflare Web Analytics 也不載入其他網站的資源。</li>
           <li>Cloudflare 的機器人偵測會在頁面加入它自己的 script，網站的內容安全政策（CSP）會阻止這段 script 執行。Cloudflare 的安全防護功能可能設定它自己的 cookie。</li>
         </ul>
       </section>
