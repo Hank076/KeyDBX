@@ -26,9 +26,16 @@
 │  ├─ dropbox/oauth/index.html    # Dropbox 登入回呼的備援頁
 │  ├─ 404.html                    # 找不到頁面（中英並列）
 │  ├─ assets/site.css             # 共用樣式
+│  ├─ favicon.svg、favicon.ico、favicon-96x96.png   # 瀏覽器分頁圖示（build-icons.py 產生）
+│  ├─ apple-touch-icon.png        # iOS 主畫面圖示（build-icons.py 產生）
+│  ├─ web-app-manifest-192x192.png、web-app-manifest-512x512.png   # manifest 圖示（build-icons.py 產生）
+│  ├─ site.webmanifest            # web app manifest
 │  ├─ .well-known/apple-app-site-association
-│  └─ _headers                    # 回應 header：CSP、驗證檔的 Content-Type
-├─ scripts/check-site.py          # 網站檢查
+│  └─ _headers                    # 回應 header：CSP、驗證檔與 manifest 的 Content-Type
+├─ icons/                         # 圖示的原始 SVG，不發布：favicon-16.svg、favicon-64.svg、icon-full.svg
+├─ scripts/
+│  ├─ check-site.py               # 網站檢查
+│  └─ build-icons.py              # 從 icons/ 產生 site/ 的圖示
 └─ .github/
    ├─ ISSUE_TEMPLATE/             # Issue 表單：問題回報、功能建議、聯絡連結
    └─ SECURITY.md                 # 安全問題的回報方式
@@ -52,7 +59,25 @@ python3 -m http.server 8000 --directory site
 python3 web/scripts/check-site.py
 ```
 
-檢查項目：HTML 標籤成對、站內連結指向存在的檔案、所有頁面的 stylesheet 網址相同且帶 `?v=` 版本參數、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang`、`referrer` 與 CSP meta（`/dropbox/oauth/` 與 `404.html` 用不放行 script 的嚴格版，其他頁放行 Web Analytics）、`_headers` 的必要規則（`/*` 的 `script-src` 只有 `https://static.cloudflareinsights.com`、不含 `unsafe`，`/dropbox/oauth/*` 另有嚴格的 CSP，不使用 detach 語法 `! Header`）、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
+檢查項目：HTML 標籤成對、站內連結指向存在的檔案、所有頁面的 stylesheet 網址相同且帶 `?v=` 版本參數、每頁都有 icon 與 manifest 的 `<link>` 與 `apple-mobile-web-app-title`（網址在所有頁面相同、帶 `?v=` 且指向存在的檔案，頁面與 `site.webmanifest` 的 icon 用同一個 `?v=`）、`site.webmanifest` 可解析且每個 icon 的 PNG 實際寬高與 `sizes` 相符（`any` 與 `maskable` 都有 192 與 512）、`favicon-96x96.png` 與 `apple-touch-icon.png` 的實際寬高、`favicon.ico` 含 16、32、48 三種尺寸、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang`、`referrer` 與 CSP meta（`/dropbox/oauth/` 與 `404.html` 用不放行 script 的嚴格版，其他頁放行 Web Analytics）、`_headers` 的必要規則（`/site.webmanifest` 的 `Content-Type: application/manifest+json`、`/*` 的 `script-src` 只有 `https://static.cloudflareinsights.com`、不含 `unsafe`，`/dropbox/oauth/*` 另有嚴格的 CSP，不使用 detach 語法 `! Header`）、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
+
+## 重產圖示
+
+修改 `icons/` 的 SVG 後，在 App repo 根目錄執行：
+
+```bash
+python3 web/scripts/build-icons.py
+```
+
+腳本需要 Google Chrome（`/Applications/Google Chrome.app`），以 headless Chrome 截圖產生 PNG，再把 16、32、48 三張 PNG 包成 `favicon.ico`。所有產出驗證通過後才寫入 `site/`，失敗時 `site/` 不變。同一個 Chrome 版本重複執行時，產出逐位元組相同；Chrome 版本不同時，PNG 的位元組可能不同。沒有修改 `icons/` 時不要重產：產出改變會讓 `site/` 出現沒有意義的差異。
+
+| 原始檔 | 產出 |
+| --- | --- |
+| `icons/favicon-16.svg` | `favicon.svg`、`favicon.ico` 的 16px |
+| `icons/favicon-64.svg` | `favicon.ico` 的 32、48px、`favicon-96x96.png` |
+| `icons/icon-full.svg` | `apple-touch-icon.png`（180）、`web-app-manifest-192x192.png`、`web-app-manifest-512x512.png` |
+
+`icon-full.svg` 滿版不留圓角：iOS 與 maskable icon 由系統套用形狀，圖案在 maskable 的安全區（中心半徑 40%）內。產生後依 `web/AGENTS.md` 更新各頁與 `site.webmanifest` 的 icon `?v=`，再執行檢查。
 
 ## Cloudflare Pages 設定
 
@@ -98,8 +123,21 @@ curl -s -A "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/6
 確認 Dropbox 回呼頁送出不放行 script 的嚴格 CSP（結果應為 1）。Pages 把 `/*` 與 `/dropbox/oauth/*` 的 CSP 以逗號串接在同一個 header，瀏覽器同時套用兩個 policy：
 
 ```bash
-curl -sI https://keydbx.lab076.dev/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+curl -sI https://keydbx.lab076.dev/dropbox/oauth/ | grep -i "^content-security-policy" | grep -c "default-src 'none'; style-src 'self'; img-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 ```
+
+確認 manifest 以 manifest 的 MIME type 回應。結果應為一行 `content-type: application/manifest+json`：
+
+```bash
+curl -sI https://keydbx.lab076.dev/site.webmanifest | grep -i "^content-type"
+```
+
+部署後在瀏覽器確認 favicon 與 manifest：
+
+1. 用桌面版 Chrome 開啟 <https://keydbx.lab076.dev/>，開啟開發者工具，重新載入頁面。
+2. 確認分頁顯示 KeyDBX 的圖示，**Console** 沒有 favicon 或 manifest 的 CSP 錯誤（`Refused to load` 加上 `img-src` 或 `manifest-src`）。
+3. 在 **Application** → **Manifest** 確認讀到 `site.webmanifest`，名稱為 KeyDBX，**Icons** 顯示 192 與 512 的圖示。
+4. 開啟 <https://keydbx.lab076.dev/dropbox/oauth/>，重複第 2 步。
 
 部署後在瀏覽器確認 Web Analytics 有送出資料：
 

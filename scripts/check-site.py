@@ -6,6 +6,7 @@
 
 import json
 import shutil
+import struct
 import subprocess
 import sys
 from html.parser import HTMLParser
@@ -34,17 +35,53 @@ VOID_ELEMENTS = {
 
 # 一般頁面放行 Cloudflare Web Analytics 的 beacon；/dropbox/oauth/ 的網址帶授權碼，不放行任何 script。
 ANALYTICS_SCRIPT_SRC = "https://static.cloudflareinsights.com"
+# manifest-src 'self' 讓瀏覽器讀取同網域的 site.webmanifest，default-src 'none' 會擋下它。
 EXPECTED_CSP_ANALYTICS = (
     f"default-src 'none'; script-src {ANALYTICS_SCRIPT_SRC}; "
     "connect-src 'self' https://cloudflareinsights.com; "
-    "style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+    "style-src 'self'; img-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'"
 )
-EXPECTED_CSP_STRICT = "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+EXPECTED_CSP_STRICT = (
+    "default-src 'none'; style-src 'self'; img-src 'self'; manifest-src 'self'; "
+    "base-uri 'none'; form-action 'none'"
+)
 # 404.html 也用嚴格版：_headers 的路徑比對分大小寫，/Dropbox/OAuth/?code=… 由 404 回應且只套用 /*。
 STRICT_CSP_PAGES = {"dropbox/oauth/index.html", "404.html"}
 # _headers 另外涵蓋 meta 做不到的 frame-ancestors。
 FRAME_ANCESTORS = "; frame-ancestors 'none'"
 EXPECTED_AASA = {"webcredentials": {"apps": ["NQ5QFN5794.dev.lab076.KeyDBX"]}}
+
+# 每頁 <head> 的 icon 與 manifest 標籤：(rel, type, sizes, 路徑)。href 為路徑加 ?v=<版本>，
+# 所有頁面與 site.webmanifest 的 icon 用同一個版本。icon 由 scripts/build-icons.py 產生。
+ICON_LINKS = [
+    ("icon", "image/png", "96x96", "/favicon-96x96.png"),
+    ("icon", "image/svg+xml", None, "/favicon.svg"),
+    ("shortcut icon", None, None, "/favicon.ico"),
+    ("apple-touch-icon", None, "180x180", "/apple-touch-icon.png"),
+    ("manifest", None, None, "/site.webmanifest"),
+]
+ICON_RELS = {rel for rel, _, _, _ in ICON_LINKS}
+APPLE_TITLE = "KeyDBX"
+MANIFEST = "site.webmanifest"
+# 固定 start_url：沒有時起始網址等於安裝當下的頁面（可能是帶授權碼的 /dropbox/oauth/?code=…），
+# scope 會縮到該頁目錄，id 預設等於 start_url。theme_color 是 header 的深藍，background_color 是網站底色。
+EXPECTED_MANIFEST_FIELDS = {
+    "id": "/",
+    "name": "KeyDBX",
+    "short_name": "KeyDBX",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#0F1828",
+    "background_color": "#F2F1EE",
+}
+# site/favicon.svg 是這個原始檔的原樣複本（scripts/build-icons.py 產生）。
+FAVICON_SVG_SOURCE = "icons/favicon-16.svg"
+# 只標 maskable 的圖示不會用在一般情境，不支援 maskable 的瀏覽器也不使用它，所以兩種 purpose 都要有。
+MANIFEST_PURPOSES = {"any", "maskable"}
+MANIFEST_SIZES = {"192x192", "512x512"}
+ICO_SIZES = {16, 32, 48}
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 # 中英成對的頁面：(正體中文, 英文)
 PAGE_PAIRS = [
@@ -72,6 +109,7 @@ class PageParser(HTMLParser):
         self.links = []  # (tag, attr, value)
         self.alternates = []  # (hreflang, href)
         self.stylesheets = []  # <link rel="stylesheet"> 的 href
+        self.icons = []  # icon 與 manifest 的 <link>：(rel, type, sizes, href)
         self.counts = {"h2": 0, "li": 0, "details": 0}
 
     def handle_starttag(self, tag, attrs):
@@ -84,6 +122,8 @@ class PageParser(HTMLParser):
             self.alternates.append((attrs.get("hreflang"), attrs.get("href")))
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.stylesheets.append(attrs.get("href"))
+        if tag == "link" and attrs.get("rel") in ICON_RELS:
+            self.icons.append((attrs.get("rel"), attrs.get("type"), attrs.get("sizes"), attrs.get("href")))
         for attr in ("href", "src", "action", "formaction", "srcset", "poster", "data"):
             if attr in attrs and attrs[attr] is not None:
                 self.links.append((tag, attr, attrs[attr]))
@@ -190,6 +230,10 @@ def check_html(path):
         if langs != {"zh-Hant-TW", "en"}:
             error(rel, f"hreflang 應為 zh-Hant-TW 與 en，實得 {sorted(l for l in langs if l)}")
 
+    titles = [m.get("content") for m in parser.metas if m.get("name") == "apple-mobile-web-app-title"]
+    if titles != [APPLE_TITLE]:
+        error(rel, f"應有一個 <meta name=\"apple-mobile-web-app-title\" content=\"{APPLE_TITLE}\">，實得 {titles!r}")
+
     if rel == "dropbox/oauth/index.html":
         if metas.get("robots") != "noindex":
             error(rel, "缺少 <meta name=\"robots\" content=\"noindex\">")
@@ -197,7 +241,7 @@ def check_html(path):
             if word in lowered:
                 error(rel, f"不得處理網址參數，發現 {word!r}")
 
-    return rel, parser.counts, parser.stylesheets
+    return rel, parser.counts, parser.stylesheets, parser.icons
 
 
 def check_stylesheets(stylesheets):
@@ -216,6 +260,221 @@ def check_stylesheets(stylesheets):
     if len(hrefs) > 1:
         detail = "；".join(f"{rel} {stylesheets[rel]!r}" for rel in sorted(stylesheets))
         error("site/**/*.html", f"所有頁面的 stylesheet 網址應相同，實得 {detail}")
+
+
+def url_version(href):
+    return parse_qs(urlsplit(href).query).get("v", [""])[0]
+
+
+def png_size(rel):
+    """讀 PNG 的 IHDR，回傳 (寬, 高)。不是 PNG 或讀不到時記錄錯誤並回傳 None。"""
+    try:
+        data = (ROOT / rel).read_bytes()[:26]
+    except OSError as exc:
+        error(rel, f"無法讀取：{exc}")
+        return None
+    return png_size_of(rel, data)
+
+
+def png_size_of(label, data):
+    if len(data) < 24 or data[:8] != PNG_SIGNATURE or data[12:16] != b"IHDR":
+        error(label, f"不是 PNG（前 16 bytes 為 {data[:16].hex()}）")
+        return None
+    return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
+
+
+def check_png_matches(label, rel, sizes):
+    """`sizes`（例如 "180x180"）與 PNG 實際寬高相符。"""
+    actual = png_size(rel)
+    if actual is not None and f"{actual[0]}x{actual[1]}" != sizes:
+        error(label, f"{rel} 的實際尺寸為 {actual[0]}x{actual[1]}，標示的 sizes 為 {sizes!r}")
+
+
+def icon_tag(rel, kind):
+    return f"<link rel=\"{rel}\"" + (f" type=\"{kind}\"" if kind else "") + ">"
+
+
+def check_icons(icons):
+    """每頁都有 ICON_LINKS 的標籤，href 帶 ?v=、指向存在的檔案，而且所有頁面相同。回傳用到的版本。"""
+    hrefs = {}  # (rel, type) → {頁面: href}
+    versions = set()
+    expected_keys = {(r, t) for r, t, _, _ in ICON_LINKS}
+    for rel in sorted(icons):
+        found = icons[rel]
+        for link in found:
+            if (link[0], link[1]) not in expected_keys:
+                error(rel, f"多出不在清單內的 {icon_tag(link[0], link[1])}：{link[3]!r}")
+        for want_rel, want_type, want_sizes, want_path in ICON_LINKS:
+            tag = icon_tag(want_rel, want_type)
+            matches = [link for link in found if link[0] == want_rel and link[1] == want_type]
+            if len(matches) != 1:
+                error(rel, f"應有一個 {tag}，實得 {[link[3] for link in matches]!r}")
+                continue
+            _, _, sizes, href = matches[0]
+            href = href or ""
+            hrefs.setdefault((want_rel, want_type), {})[rel] = href
+            if sizes != want_sizes:
+                error(rel, f"{tag} 的 sizes 應為 {want_sizes!r}，實得 {sizes!r}")
+            if urlsplit(href).path != want_path:
+                error(rel, f"{tag} 應指向 {want_path}?v=<版本>，實得 {href!r}")
+                continue
+            version = url_version(href)
+            if not version:
+                error(rel, f"{tag} 的網址應帶 ?v= 版本參數，實得 {href!r}")
+            versions.add(version)
+            if resolve_internal(want_path) is None:
+                error(rel, f"{tag} 指向不存在的檔案：{href!r}")
+    for (want_rel, want_type), by_page in sorted(hrefs.items(), key=lambda item: str(item[0])):
+        if len(set(by_page.values())) > 1:
+            detail = "；".join(f"{page} {href!r}" for page, href in sorted(by_page.items()))
+            error("site/**/*.html", f"所有頁面的 {icon_tag(want_rel, want_type)} 網址應相同，實得 {detail}")
+    # 有 sizes 的 PNG 圖示：實際寬高要與 sizes 相符。
+    for _, _, want_sizes, want_path in ICON_LINKS:
+        path = want_path.lstrip("/")
+        if want_sizes and path.endswith(".png") and (ROOT / path).is_file():
+            check_png_matches(path, path, want_sizes)
+    return versions
+
+
+def check_manifest():
+    """site.webmanifest 是合法 JSON，欄位符合 EXPECTED_MANIFEST_FIELDS，start_url 指向存在的頁面，
+    icons 指向存在的 PNG，實際寬高與 sizes 相符。回傳 icon 用到的版本。"""
+    versions = set()
+    try:
+        data = json.loads((ROOT / MANIFEST).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        error(MANIFEST, f"無法解析 JSON：{exc}")
+        return versions
+    if not isinstance(data, dict):
+        error(MANIFEST, f"最上層應為物件，實得 {type(data).__name__}")
+        return versions
+    for key, expected in EXPECTED_MANIFEST_FIELDS.items():
+        if data.get(key) != expected:
+            error(MANIFEST, f"{key} 應為 {expected!r}，實得 {data.get(key)!r}")
+    start_url = data.get("start_url")
+    if isinstance(start_url, str) and start_url.startswith("/") and resolve_internal(urlsplit(start_url).path) is None:
+        error(MANIFEST, f"start_url 指向不存在的頁面：{start_url!r}")
+    icons = data.get("icons")
+    if not isinstance(icons, list) or not icons:
+        error(MANIFEST, f"icons 應為非空陣列，實得 {icons!r}")
+        return versions
+    coverage = set()  # (purpose, sizes)
+    for index, icon in enumerate(icons):
+        label = f"{MANIFEST} icons[{index}]"
+        if not isinstance(icon, dict):
+            error(label, f"應為物件，實得 {icon!r}")
+            continue
+        src, sizes, kind = icon.get("src"), icon.get("sizes"), icon.get("type")
+        if not isinstance(src, str) or not src.startswith("/"):
+            error(label, f"src 應為以 / 開頭的站內路徑，實得 {src!r}")
+            continue
+        version = url_version(src)
+        if not version:
+            error(label, f"src 應帶 ?v= 版本參數，實得 {src!r}")
+        versions.add(version)
+        path = urlsplit(src).path.lstrip("/")
+        if not (ROOT / path).is_file():
+            error(label, f"src 指向不存在的檔案：{src!r}")
+            continue
+        if kind != "image/png" or not path.endswith(".png"):
+            error(label, f"應為 PNG（type \"image/png\"），實得 type {kind!r}、src {src!r}")
+            continue
+        check_png_matches(label, path, sizes)
+        for purpose in str(icon.get("purpose", "any")).split():
+            coverage.add((purpose, sizes))
+    for purpose in sorted(MANIFEST_PURPOSES):
+        missing = sorted(size for size in MANIFEST_SIZES if (purpose, size) not in coverage)
+        if missing:
+            error(MANIFEST, f"purpose {purpose!r} 缺少 {missing} 的圖示")
+    return versions
+
+
+def check_icon_versions(page_versions, manifest_versions):
+    """頁面與 site.webmanifest 的 icon 網址用同一個 ?v=：修改 icon 時一起換掉。"""
+    found = (page_versions | manifest_versions) - {""}
+    if len(found) > 1:
+        error(
+            "site/**/*.html、site/site.webmanifest",
+            f"icon 與 manifest 網址的 ?v= 應相同，頁面實得 {sorted(page_versions)}，manifest 實得 {sorted(manifest_versions)}",
+        )
+
+
+def embedded_png_length(data, offset):
+    """從 offset 的 PNG signature 走過 chunk 到 IEND，回傳 PNG 的長度。找不到 IEND 時回傳 None。"""
+    pos = offset + len(PNG_SIGNATURE)
+    while pos + 12 <= len(data):
+        length = int.from_bytes(data[pos:pos + 4], "big")
+        chunk = data[pos + 4:pos + 8]
+        pos += 12 + length
+        if chunk == b"IEND":
+            return pos - offset if pos <= len(data) else None
+    return None
+
+
+def check_favicon_svg():
+    """site/favicon.svg 與 icons/favicon-16.svg 逐位元組相同：只以 build-icons.py 產生，不手改。"""
+    rel = "favicon.svg"
+    try:
+        site_bytes = (ROOT / rel).read_bytes()
+        source_bytes = (REPO / FAVICON_SVG_SOURCE).read_bytes()
+    except OSError as exc:
+        error(rel, f"無法讀取：{exc}")
+        return
+    if site_bytes != source_bytes:
+        error(
+            rel,
+            f"應與 {FAVICON_SVG_SOURCE} 逐位元組相同（{len(source_bytes)} bytes），實得 {len(site_bytes)} bytes 且內容不同；"
+            "以 python3 web/scripts/build-icons.py 重新產生",
+        )
+
+
+def check_ico():
+    """favicon.ico 是 ICO，目錄項包含 ICO_SIZES。每項是寬高與目錄項相符的 PNG，color count 0、reserved 0、
+    planes 1、bits per pixel 32，bytes in res 等於內嵌 PNG 的長度。"""
+    rel = "favicon.ico"
+    try:
+        data = (ROOT / rel).read_bytes()
+    except OSError as exc:
+        error(rel, f"無法讀取：{exc}")
+        return
+    if len(data) < 6:
+        error(rel, f"檔案只有 {len(data)} bytes，不是 ICO")
+        return
+    reserved, kind, count = struct.unpack("<HHH", data[:6])
+    if reserved != 0 or kind != 1:
+        error(rel, f"ICONDIR 應為 reserved 0、type 1，實得 reserved {reserved}、type {kind}")
+        return
+    if len(data) < 6 + 16 * count:
+        error(rel, f"目錄有 {count} 項，但檔案只有 {len(data)} bytes")
+        return
+    sizes = set()
+    for index in range(count):
+        width, height, colors, reserved, planes, bpp, size, offset = struct.unpack(
+            "<BBBBHHII", data[6 + 16 * index:22 + 16 * index]
+        )
+        width, height = width or 256, height or 256
+        if width == height:
+            sizes.add(width)
+        else:
+            error(rel, f"第 {index} 項不是正方形：{width}x{height}")
+        label = f"{rel} 第 {index} 項（{width}x{height}，位移 {offset}，長度 {size}）"
+        fields = {"color count": (colors, 0), "reserved": (reserved, 0), "planes": (planes, 1), "bits per pixel": (bpp, 32)}
+        for name, (actual_value, expected_value) in fields.items():
+            if actual_value != expected_value:
+                error(label, f"{name} 應為 {expected_value}，實得 {actual_value}")
+        if offset + size > len(data):
+            error(label, f"超出檔案長度 {len(data)} bytes")
+            continue
+        actual = png_size_of(label, data[offset:offset + 26])
+        if actual is None:
+            continue
+        if actual != (width, height):
+            error(label, f"PNG 的實際尺寸為 {actual[0]}x{actual[1]}，與目錄項不符")
+        png_length = embedded_png_length(data, offset)
+        if png_length != size:
+            error(label, f"bytes in res 應等於內嵌 PNG 的長度 {png_length}（到 IEND 結束），實得 {size}")
+    if sizes != ICO_SIZES:
+        error(rel, f"目錄項的尺寸應為 {sorted(ICO_SIZES)}，實得 {sorted(sizes)}")
 
 
 def check_pairs(counts):
@@ -247,7 +506,8 @@ def csp_directives(csp):
 
 
 def check_headers():
-    """`site/_headers`：驗證檔以 application/json 回應，所有頁面帶 CSP 與 no-referrer，/dropbox/oauth/* 另帶嚴格的 CSP。"""
+    """`site/_headers`：驗證檔以 application/json、manifest 以 application/manifest+json 回應，
+    所有頁面帶 CSP 與 no-referrer，/dropbox/oauth/* 另帶嚴格的 CSP。"""
     path = ROOT / "_headers"
     if not path.is_file():
         error("site/_headers", "檔案不存在")
@@ -270,6 +530,9 @@ def check_headers():
     aasa = rules.get("/.well-known/apple-app-site-association", {})
     if aasa.get("content-type") != "application/json":
         error("site/_headers", "驗證檔應設定 Content-Type: application/json")
+    manifest_type = rules.get(f"/{MANIFEST}", {}).get("content-type")
+    if manifest_type != "application/manifest+json":
+        error("site/_headers", f"/{MANIFEST} 應設定 Content-Type: application/manifest+json，實得 {manifest_type!r}")
     every = rules.get("/*", {})
     csp = every.get("content-security-policy", "")
     expected = EXPECTED_CSP_ANALYTICS + FRAME_ANCESTORS
@@ -351,15 +614,20 @@ def main():
     html_files = sorted(p for p in ROOT.rglob("*.html") if ".git" not in p.parts)
     counts = {}
     stylesheets = {}
+    icons = {}
     for path in html_files:
-        rel, page_counts, page_stylesheets = check_html(path)
+        rel, page_counts, page_stylesheets, page_icons = check_html(path)
         counts[rel] = page_counts
         stylesheets[rel] = page_stylesheets
+        icons[rel] = page_icons
     print(f"HTML：檢查 {len(html_files)} 個檔案")
     for rel in sorted(counts):
         print(f"  {rel} {counts[rel]}")
     check_pairs(counts)
     check_stylesheets(stylesheets)
+    check_icon_versions(check_icons(icons), check_manifest())
+    check_ico()
+    check_favicon_svg()
     check_css()
     check_aasa()
     check_headers()
