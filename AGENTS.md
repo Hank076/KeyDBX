@@ -6,6 +6,7 @@
 
 - 網站檔案只放在 `site/`：Cloudflare Pages 只發布這個目錄，公開 repo 的其他檔案（開發文件、腳本）不會出現在網站上。
 - 頁面只用靜態 HTML 與 `site/assets/site.css`，不用 JavaScript，也不載入任何外部資源（字型、CDN、分析、追蹤、嵌入）：`/dropbox/oauth/` 的網址帶有 OAuth 授權碼，外部資源可能把網址送出去；隱私政策也承諾網站不追蹤。
+- 修改 `site/assets/site.css` 時，所有頁面 stylesheet 連結（`/assets/site.css?v=<版本>`）的 `?v=` 一起改成新值，例如修改當天的日期 `20261014`，同一天第二次改成 `20261014-2`：Cloudflare 讓瀏覽器快取 CSS 4 小時，網址不變時訪客會用舊 CSS 配新 HTML。
 - 每頁保留 `<meta name="referrer" content="no-referrer">` 與 Content-Security-Policy meta（`default-src 'none'; style-src 'self'; img-src 'self'`），`site/_headers` 也對所有路徑送出相同的 CSP 與 `Referrer-Policy: no-referrer`：瀏覽器因此擋下 script 與外部資源，點出站外連結時也不送出網址。meta 在本機預覽時也生效，header 另外涵蓋 meta 做不到的 `frame-ancestors`。
 - CSP 不得加入 `script-src`，也不得使用 `unsafe-inline` 或 `unsafe-eval`：Cloudflare 免費方案的 JavaScript Detections 只能對整個網域開關，無法只對這個子網域關閉（`hankchen.info` 已確認開啟；`lab076.dev` 的設定尚未確認，當作開啟處理），它注入的 inline script 只靠 CSP 擋下；放寬後注入的 script 就會執行，而 `/dropbox/oauth/` 的網址帶有授權碼。
 - 不得開啟其他會注入 script 的 Cloudflare 功能（Web Analytics、Email Address Obfuscation、Rocket Loader）：網站承諾不使用 JavaScript，隱私政策也承諾沒有分析。Web Analytics 只對瀏覽器的 User-Agent 注入，檢查方式見 README「驗證檔檢查」。

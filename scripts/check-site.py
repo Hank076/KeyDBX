@@ -10,7 +10,7 @@ import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 REPO = Path(__file__).resolve().parent.parent
 ROOT = REPO / "site"
@@ -60,6 +60,7 @@ class PageParser(HTMLParser):
         self.metas = []
         self.links = []  # (tag, attr, value)
         self.alternates = []  # (hreflang, href)
+        self.stylesheets = []  # <link rel="stylesheet"> 的 href
         self.counts = {"h2": 0, "li": 0, "details": 0}
 
     def handle_starttag(self, tag, attrs):
@@ -70,6 +71,8 @@ class PageParser(HTMLParser):
             self.metas.append(attrs)
         if tag == "link" and attrs.get("rel") == "alternate":
             self.alternates.append((attrs.get("hreflang"), attrs.get("href")))
+        if tag == "link" and attrs.get("rel") == "stylesheet":
+            self.stylesheets.append(attrs.get("href"))
         for attr in ("href", "src", "action", "formaction", "srcset", "poster", "data"):
             if attr in attrs and attrs[attr] is not None:
                 self.links.append((tag, attr, attrs[attr]))
@@ -182,7 +185,25 @@ def check_html(path):
             if word in lowered:
                 error(rel, f"不得處理網址參數，發現 {word!r}")
 
-    return rel, parser.counts
+    return rel, parser.counts, parser.stylesheets
+
+
+def check_stylesheets(stylesheets):
+    """所有頁面的 stylesheet 網址相同且帶 `?v=`：Cloudflare 讓瀏覽器快取 CSS 4 小時，改 CSS 時要換網址。"""
+    hrefs = set()
+    for rel in sorted(stylesheets):
+        found = stylesheets[rel]
+        if len(found) != 1:
+            error(rel, f"應有一個 <link rel=\"stylesheet\">，實得 {found!r}")
+            continue
+        href = found[0] or ""
+        version = parse_qs(urlsplit(href).query).get("v", [""])[0]
+        if not version:
+            error(rel, f"stylesheet 網址應帶 ?v= 版本參數，實得 {href!r}")
+        hrefs.add(href)
+    if len(hrefs) > 1:
+        detail = "；".join(f"{rel} {stylesheets[rel]!r}" for rel in sorted(stylesheets))
+        error("site/**/*.html", f"所有頁面的 stylesheet 網址應相同，實得 {detail}")
 
 
 def check_pairs(counts):
@@ -284,13 +305,16 @@ def check_yaml():
 def main():
     html_files = sorted(p for p in ROOT.rglob("*.html") if ".git" not in p.parts)
     counts = {}
+    stylesheets = {}
     for path in html_files:
-        rel, page_counts = check_html(path)
+        rel, page_counts, page_stylesheets = check_html(path)
         counts[rel] = page_counts
+        stylesheets[rel] = page_stylesheets
     print(f"HTML：檢查 {len(html_files)} 個檔案")
     for rel in sorted(counts):
         print(f"  {rel} {counts[rel]}")
     check_pairs(counts)
+    check_stylesheets(stylesheets)
     check_css()
     check_aasa()
     check_headers()

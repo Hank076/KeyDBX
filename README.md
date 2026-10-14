@@ -52,7 +52,7 @@ python3 -m http.server 8000 --directory site
 python3 web/scripts/check-site.py
 ```
 
-檢查項目：HTML 標籤成對、站內連結指向存在的檔案、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang` 與 `referrer`、`_headers` 的必要規則、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
+檢查項目：HTML 標籤成對、站內連結指向存在的檔案、所有頁面的 stylesheet 網址相同且帶 `?v=` 版本參數、沒有 `<script`、沒有 `http://`、外部連結只指向允許的網域、每頁的 `lang`、`hreflang` 與 `referrer`、`_headers` 的必要規則、驗證檔與 Issue 表單可解析。Issue 表單的 YAML 以 `ruby -ryaml` 解析，沒有 Ruby 時略過並顯示提示。
 
 ## Cloudflare Pages 設定
 
