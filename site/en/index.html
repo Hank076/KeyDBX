@@ -15,88 +15,189 @@
 </head>
 <body>
 <header class="site">
-  <div class="wrap">
-    <a class="brand" href="/en/">KeyDBX</a>
-    <nav class="site" aria-label="Site">
+  <div class="wrap header-bar">
+    <a class="brand" href="/en/"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#D4AE6A" stroke-width="2.5"/><circle cx="16" cy="13.5" r="3.6" fill="#E0BF7E"/><path d="M14.5 15.5h3l1 6.5h-5z" fill="#E0BF7E"/></svg>KeyDBX</a>
+    <nav class="site tabs" aria-label="Site">
       <ul>
         <li><a href="/en/" aria-current="page">Overview</a></li>
         <li><a href="/en/privacy/">Privacy Policy</a></li>
         <li><a href="/en/support/">Support</a></li>
-        <li><a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></li>
+        <li class="lang"><a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
-  <h1>KeyDBX</h1>
-  <p class="lead">A KeePass-compatible password manager for iOS. Your database is decrypted only on your device. The developer runs no servers and never sees your data.</p>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-main">
+        <div class="hero-text">
+          <p class="hero-eyebrow">KEEPASS-COMPATIBLE · iOS 26 OR LATER</p>
+          <h1>Your database is decrypted only on your device</h1>
+          <p class="lead">KeyDBX is a KeePass-compatible password manager for iOS. The developer runs no servers and never sees your data.</p>
+          <p class="actions"><a class="btn btn-gold" href="#features">See features</a><a class="btn btn-outline" href="/en/support/">Support and bug reports</a></p>
+        </div>
+        <div class="hero-art">
+          <svg viewBox="0 0 400 400" width="380" height="380" aria-hidden="true"><path d="M186 20h28l-14 20z" fill="#C6A15E"/><circle cx="200" cy="200" r="156" fill="none" stroke="#C6A15E" stroke-width="14"/><circle cx="200" cy="200" r="128" fill="none" stroke="#C6A15E" stroke-width="18" stroke-dasharray="3 31.56" stroke-dashoffset="1.5" transform="rotate(-90 200 200)"/><circle cx="200" cy="200" r="98" fill="none" stroke="#5A5545" stroke-width="3"/><circle cx="200" cy="180" r="30" fill="#E0BF7E"/><path d="M188 198h24l8 52a6 6 0 0 1-6 7h-28a6 6 0 0 1-6-7z" fill="#E0BF7E"/></svg>
+        </div>
+      </div>
+      <ul class="hero-points">
+        <li>Reads and writes KDBX 4.0 and 4.1</li>
+        <li>No developer servers</li>
+        <li>No analytics, ads, or tracking</li>
+        <li>Interface in English and Traditional Chinese</li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>Features</h2>
-  <ul class="features">
-    <li>
-      <h3>KeePass databases</h3>
-      <p>Reads and writes KDBX 4.0 and 4.1 with a master password and key file. Saving changes only what you edited, so KeePass and KeePassXC keep opening the same file.</p>
-    </li>
-    <li>
-      <h3>AutoFill</h3>
-      <p>Fills usernames, passwords, and two-step verification codes in Safari and other apps. When you create an account or change a password, you can save the new password to KeyDBX (iOS 26.2 or later).</p>
-    </li>
-    <li>
-      <h3>Passkeys</h3>
-      <p>Creates and uses passkeys for websites. The storage format is compatible with KeePassXC 2.7.12 or later.</p>
-    </li>
-    <li>
-      <h3>Verification codes</h3>
-      <p>Shows TOTP codes, including Steam codes. Set them up by scanning a QR code with the camera or from a photo, or by opening an <code>otpauth://</code> link.</p>
-    </li>
-    <li>
-      <h3>Face ID</h3>
-      <p>Unlocks the app and AutoFill with Face ID, so you do not type the master password every time.</p>
-    </li>
-    <li>
-      <h3>Dropbox sync</h3>
-      <p>Opens and saves databases on Dropbox directly, without the Dropbox app. When both sides change, Dropbox keeps a separate copy and no version is overwritten.</p>
-    </li>
-    <li>
-      <h3>Files and iCloud Drive</h3>
-      <p>Opens databases in the Files app, including iCloud Drive and other cloud storage.</p>
-    </li>
-    <li>
-      <h3>Works offline</h3>
-      <p>Unlocks and edits a Dropbox database without a network connection and uploads the changes when you are back online.</p>
-    </li>
-    <li>
-      <h3>Privacy protection</h3>
-      <p>Auto-lock, hidden content in the app switcher, and hidden passwords during screen recording. Copied passwords stay on this device and are cleared after 60 seconds.</p>
-    </li>
-  </ul>
+  <section class="home-section" id="features">
+    <div class="wrap">
+      <p class="eyebrow">Features</p>
+      <h2 class="section-title">Your desktop database, ready on iPhone</h2>
+      <ul class="feature-grid">
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+          <div>
+            <h3>KeePass databases</h3>
+            <p>Reads and writes KDBX 4.0 and 4.1 with a master password and key file. Saving changes only what you edited, so KeePass and KeePassXC keep opening the same file.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 9.5v5M11 12h.01M14 12h.01M17 12h.01"/></svg></span>
+          <div>
+            <h3>AutoFill</h3>
+            <p>Fills usernames, passwords, and two-step verification codes in Safari and other apps. When you create an account or change a password, you can save the new password to KeyDBX (iOS 26.2 or later).</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></span>
+          <div>
+            <h3>Passkeys</h3>
+            <p>Creates and uses passkeys for websites. The storage format is compatible with KeePassXC 2.7.12 or later.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
+          <div>
+            <h3>Verification codes</h3>
+            <p>Shows TOTP codes, including Steam codes. Set them up by scanning a QR code with the camera or from a photo, or by opening an <code>otpauth://</code> link.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1.5M15 9v1.5M12 9v4h-1M9.5 16a4 4 0 0 0 5 0"/></svg></span>
+          <div>
+            <h3>Face ID</h3>
+            <p>Unlocks the app and AutoFill with Face ID, so you do not type the master password every time.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9a4 4 0 0 1 0 9"/><path d="M9.5 14.5L12 12l2.5 2.5M12 12v8"/></svg></span>
+          <div>
+            <h3>Dropbox sync</h3>
+            <p>Opens and saves databases on Dropbox directly, without the Dropbox app. When both sides change, Dropbox keeps a separate copy and no version is overwritten.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+          <div>
+            <h3>Files and iCloud Drive</h3>
+            <p>Opens databases in the Files app, including iCloud Drive and other cloud storage.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 4-2.3M14.5 10.4A10 10 0 0 1 19 12.5M2 8.8a15 15 0 0 1 4.2-2.6M10.7 5.1a15 15 0 0 1 11.3 3.7M12 20h.01"/></svg></span>
+          <div>
+            <h3>Works offline</h3>
+            <p>Unlocks and edits a Dropbox database without a network connection and uploads the changes when you are back online.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg></span>
+          <div>
+            <h3>Privacy protection</h3>
+            <p>Auto-lock, hidden content in the app switcher, and hidden passwords during screen recording. Copied passwords stay on this device and are cleared after 60 seconds.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>More features</h2>
-  <ul>
-    <li>Password generator with a strength indicator.</li>
-    <li>Entry history: view, compare, and restore earlier versions.</li>
-    <li>Import from and export to other password managers with Credential Exchange.</li>
-    <li>Interface languages: English and Traditional Chinese.</li>
-  </ul>
+  <section class="home-section">
+    <div class="wrap">
+      <div class="interop">
+        <div class="interop-text">
+          <p class="eyebrow">Interoperability</p>
+          <h2>One file, shared with your computer</h2>
+          <p>Saving changes only what you edited, so KeePass and KeePassXC keep opening the same file. The passkey storage format is compatible with KeePassXC 2.7.12 or later.</p>
+          <p>When both sides change, Dropbox keeps a separate copy and no version is overwritten.</p>
+        </div>
+        <div class="interop-diagram">
+          <div class="nodes">
+            <div class="node">
+              <p class="node-title">iPhone</p>
+              <p class="node-sub">KeyDBX</p>
+            </div>
+            <span class="node-line" aria-hidden="true"></span>
+            <div class="node node-file">
+              <p class="node-title">.kdbx</p>
+              <p class="node-sub">The same database</p>
+            </div>
+            <span class="node-line" aria-hidden="true"></span>
+            <div class="node">
+              <p class="node-title">Computer</p>
+              <p class="node-sub">KeePass, KeePassXC</p>
+            </div>
+          </div>
+          <p class="tags"><span class="tag">Dropbox</span> <span class="tag">iCloud Drive</span> <span class="tag">Other cloud storage in Files</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <h2>Requirements</h2>
-  <p>iOS 26 or later.</p>
+  <section class="home-section">
+    <div class="wrap spec-grid">
+      <section class="spec">
+        <h2>More features</h2>
+        <ul>
+          <li>Password generator with a strength indicator.</li>
+          <li>Entry history: view, compare, and restore earlier versions.</li>
+          <li>Import from and export to other password managers with Credential Exchange.</li>
+          <li>Interface languages: English and Traditional Chinese.</li>
+        </ul>
+      </section>
+      <section class="spec">
+        <h2>Requirements</h2>
+        <p>iOS 26 or later. Saving new passwords requires iOS 26.2 or later.</p>
+      </section>
+      <section class="spec">
+        <h2>Not supported</h2>
+        <ul>
+          <li>KDBX 3.1 and KeePass 1.x databases.</li>
+          <li>YubiKey and HOTP.</li>
+          <li>Direct connections to cloud services other than Dropbox. Open files in other cloud storage through the Files app.</li>
+        </ul>
+      </section>
+    </div>
+  </section>
 
-  <h2>Not supported</h2>
-  <ul>
-    <li>KDBX 3.1 and KeePass 1.x databases.</li>
-    <li>YubiKey and HOTP.</li>
-    <li>Direct connections to cloud services other than Dropbox. Open files in other cloud storage through the Files app.</li>
-  </ul>
-
-  <p><a href="/en/privacy/">Privacy Policy</a> · <a href="/en/support/">Support and bug reports</a></p>
+  <section class="home-section">
+    <div class="wrap">
+      <div class="privacy-card">
+        <div class="privacy-card-text">
+          <h2>KeyDBX does not collect your data</h2>
+          <p>The app contains no analytics, advertising, tracking, or third-party SDKs. The app itself connects to the network only when you use Dropbox, and only to Dropbox.</p>
+        </div>
+        <a class="btn btn-gold" href="/en/privacy/">Read the Privacy Policy</a>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site">
-  <div class="wrap">
-    <p>KeePass, KeePassXC, Dropbox, Apple, iPhone, iCloud, and Face ID are trademarks of their respective owners. KeyDBX is not affiliated with these owners.</p>
-    <p><a href="/en/privacy/">Privacy Policy</a> · <a href="/en/support/">Support</a> · <a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></p>
+  <div class="wrap footer-bar">
+    <p class="footer-note">KeePass, KeePassXC, Dropbox, Apple, iPhone, iCloud, and Face ID are trademarks of their respective owners. KeyDBX is not affiliated with these owners.</p>
+    <p class="footer-links"><a href="/en/privacy/">Privacy Policy</a> · <a href="/en/support/">Support</a> · <a href="/" lang="zh-Hant-TW" hreflang="zh-Hant-TW">正體中文</a></p>
   </div>
 </footer>
 </body>

@@ -15,88 +15,189 @@
 </head>
 <body>
 <header class="site">
-  <div class="wrap">
-    <a class="brand" href="/">KeyDBX</a>
-    <nav class="site" aria-label="網站">
+  <div class="wrap header-bar">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#D4AE6A" stroke-width="2.5"/><circle cx="16" cy="13.5" r="3.6" fill="#E0BF7E"/><path d="M14.5 15.5h3l1 6.5h-5z" fill="#E0BF7E"/></svg>KeyDBX</a>
+    <nav class="site tabs" aria-label="網站">
       <ul>
         <li><a href="/" aria-current="page">介紹</a></li>
         <li><a href="/privacy/">隱私政策</a></li>
         <li><a href="/support/">支援</a></li>
-        <li><a href="/en/" lang="en" hreflang="en">English</a></li>
+        <li class="lang"><a href="/en/" lang="en" hreflang="en">English</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
-  <h1>KeyDBX</h1>
-  <p class="lead">KeePass 相容的 iOS 密碼管理 App。資料庫只在你的裝置上解密；開發者沒有伺服器，也看不到你的資料。</p>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-main">
+        <div class="hero-text">
+          <p class="hero-eyebrow">KEEPASS 相容 · iOS 26 以上</p>
+          <h1>資料庫只在你的<br>裝置上解密</h1>
+          <p class="lead">KeyDBX 是 KeePass 相容的 iOS 密碼管理 App。開發者沒有伺服器，也看不到你的資料。</p>
+          <p class="actions"><a class="btn btn-gold" href="#features">瀏覽功能</a><a class="btn btn-outline" href="/support/">支援與問題回報</a></p>
+        </div>
+        <div class="hero-art">
+          <svg viewBox="0 0 400 400" width="380" height="380" aria-hidden="true"><path d="M186 20h28l-14 20z" fill="#C6A15E"/><circle cx="200" cy="200" r="156" fill="none" stroke="#C6A15E" stroke-width="14"/><circle cx="200" cy="200" r="128" fill="none" stroke="#C6A15E" stroke-width="18" stroke-dasharray="3 31.56" stroke-dashoffset="1.5" transform="rotate(-90 200 200)"/><circle cx="200" cy="200" r="98" fill="none" stroke="#5A5545" stroke-width="3"/><circle cx="200" cy="180" r="30" fill="#E0BF7E"/><path d="M188 198h24l8 52a6 6 0 0 1-6 7h-28a6 6 0 0 1-6-7z" fill="#E0BF7E"/></svg>
+        </div>
+      </div>
+      <ul class="hero-points">
+        <li>讀寫 KDBX 4.0 與 4.1</li>
+        <li>開發者沒有伺服器</li>
+        <li>沒有分析、廣告與追蹤</li>
+        <li>介面語言：正體中文與英文</li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>功能</h2>
-  <ul class="features">
-    <li>
-      <h3>KeePass 資料庫</h3>
-      <p>讀寫 KDBX 4.0 與 4.1，支援主密碼與金鑰檔。存檔只改你修改的部分，KeePass 與 KeePassXC 可以繼續開啟同一個檔案。</p>
-    </li>
-    <li>
-      <h3>自動填寫</h3>
-      <p>在 Safari 與其他 App 填入帳號、密碼與兩步驟驗證碼。建立帳號或更改密碼時，可以把新密碼存進 KeyDBX（iOS 26.2 或以上）。</p>
-    </li>
-    <li>
-      <h3>Passkey</h3>
-      <p>為網站建立與使用 passkey。儲存格式與 KeePassXC 2.7.12 以上相容。</p>
-    </li>
-    <li>
-      <h3>兩步驟驗證碼</h3>
-      <p>顯示 TOTP 驗證碼，包含 Steam 驗證碼。以相機或照片掃描 QR code 設定，或開啟 <code>otpauth://</code> 連結。</p>
-    </li>
-    <li>
-      <h3>Face ID</h3>
-      <p>以 Face ID 解鎖 App 與自動填寫，不必每次輸入主密碼。</p>
-    </li>
-    <li>
-      <h3>Dropbox 同步</h3>
-      <p>直接開啟與存回 Dropbox 上的資料庫，不需要安裝 Dropbox App。兩邊都修改時，Dropbox 另存一份副本，不覆蓋任何版本。</p>
-    </li>
-    <li>
-      <h3>「檔案」與 iCloud Drive</h3>
-      <p>開啟「檔案」App 中的資料庫，包含 iCloud Drive 與其他雲端空間。</p>
-    </li>
-    <li>
-      <h3>離線可用</h3>
-      <p>沒有網路時仍能解鎖與編輯 Dropbox 上的資料庫，連線後再上傳。</p>
-    </li>
-    <li>
-      <h3>隱私保護</h3>
-      <p>自動鎖定、在 App 切換器隱藏內容、螢幕錄影時隱藏密碼。複製的密碼只留在這台裝置，60 秒後清除。</p>
-    </li>
-  </ul>
+  <section class="home-section" id="features">
+    <div class="wrap">
+      <p class="eyebrow">功能</p>
+      <h2 class="section-title">桌面版的資料庫，在 iPhone 上照常使用</h2>
+      <ul class="feature-grid">
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+          <div>
+            <h3>KeePass 資料庫</h3>
+            <p>讀寫 KDBX 4.0 與 4.1，支援主密碼與金鑰檔。存檔只改你修改的部分，KeePass 與 KeePassXC 可以繼續開啟同一個檔案。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 9.5v5M11 12h.01M14 12h.01M17 12h.01"/></svg></span>
+          <div>
+            <h3>自動填寫</h3>
+            <p>在 Safari 與其他 App 填入帳號、密碼與兩步驟驗證碼。建立帳號或更改密碼時，可以把新密碼存進 KeyDBX（iOS 26.2 或以上）。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></span>
+          <div>
+            <h3>Passkey</h3>
+            <p>為網站建立與使用 passkey。儲存格式與 KeePassXC 2.7.12 以上相容。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
+          <div>
+            <h3>兩步驟驗證碼</h3>
+            <p>顯示 TOTP 驗證碼，包含 Steam 驗證碼。以相機或照片掃描 QR code 設定，或開啟 <code>otpauth://</code> 連結。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1.5M15 9v1.5M12 9v4h-1M9.5 16a4 4 0 0 0 5 0"/></svg></span>
+          <div>
+            <h3>Face ID</h3>
+            <p>以 Face ID 解鎖 App 與自動填寫，不必每次輸入主密碼。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9a4 4 0 0 1 0 9"/><path d="M9.5 14.5L12 12l2.5 2.5M12 12v8"/></svg></span>
+          <div>
+            <h3>Dropbox 同步</h3>
+            <p>直接開啟與存回 Dropbox 上的資料庫，不需要安裝 Dropbox App。兩邊都修改時，Dropbox 另存一份副本，不覆蓋任何版本。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+          <div>
+            <h3>「檔案」與 iCloud Drive</h3>
+            <p>開啟「檔案」App 中的資料庫，包含 iCloud Drive 與其他雲端空間。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 4-2.3M14.5 10.4A10 10 0 0 1 19 12.5M2 8.8a15 15 0 0 1 4.2-2.6M10.7 5.1a15 15 0 0 1 11.3 3.7M12 20h.01"/></svg></span>
+          <div>
+            <h3>離線可用</h3>
+            <p>沒有網路時仍能解鎖與編輯 Dropbox 上的資料庫，連線後再上傳。</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg></span>
+          <div>
+            <h3>隱私保護</h3>
+            <p>自動鎖定、在 App 切換器隱藏內容、螢幕錄影時隱藏密碼。複製的密碼只留在這台裝置，60 秒後清除。</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-  <h2>更多功能</h2>
-  <ul>
-    <li>密碼產生器與密碼強度提示。</li>
-    <li>項目的歷史版本：查看、比較與還原。</li>
-    <li>以 Credential Exchange 與其他密碼管理 App 互相匯入與匯出。</li>
-    <li>介面語言：正體中文與英文。</li>
-  </ul>
+  <section class="home-section">
+    <div class="wrap">
+      <div class="interop">
+        <div class="interop-text">
+          <p class="eyebrow">互通性</p>
+          <h2>與桌面版共用同一個檔案</h2>
+          <p>存檔只改你修改的部分，KeePass 與 KeePassXC 可以繼續開啟同一個檔案。Passkey 的儲存格式與 KeePassXC 2.7.12 以上相容。</p>
+          <p>兩邊都修改時，Dropbox 另存一份副本，不覆蓋任何版本。</p>
+        </div>
+        <div class="interop-diagram">
+          <div class="nodes">
+            <div class="node">
+              <p class="node-title">iPhone</p>
+              <p class="node-sub">KeyDBX</p>
+            </div>
+            <span class="node-line" aria-hidden="true"></span>
+            <div class="node node-file">
+              <p class="node-title">.kdbx</p>
+              <p class="node-sub">同一個資料庫</p>
+            </div>
+            <span class="node-line" aria-hidden="true"></span>
+            <div class="node">
+              <p class="node-title">電腦</p>
+              <p class="node-sub">KeePass、KeePassXC</p>
+            </div>
+          </div>
+          <p class="tags"><span class="tag">Dropbox</span> <span class="tag">iCloud Drive</span> <span class="tag">「檔案」App 的其他雲端空間</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <h2>系統需求</h2>
-  <p>iOS 26 或以上。</p>
+  <section class="home-section">
+    <div class="wrap spec-grid">
+      <section class="spec">
+        <h2>更多功能</h2>
+        <ul>
+          <li>密碼產生器與密碼強度提示。</li>
+          <li>項目的歷史版本：查看、比較與還原。</li>
+          <li>以 Credential Exchange 與其他密碼管理 App 互相匯入與匯出。</li>
+          <li>介面語言：正體中文與英文。</li>
+        </ul>
+      </section>
+      <section class="spec">
+        <h2>系統需求</h2>
+        <p>iOS 26 或以上。儲存新密碼需要 iOS 26.2 或以上。</p>
+      </section>
+      <section class="spec">
+        <h2>不支援</h2>
+        <ul>
+          <li>KDBX 3.1 與 KeePass 1.x 的資料庫。</li>
+          <li>YubiKey 與 HOTP。</li>
+          <li>Dropbox 以外的雲端服務直接連線。其他雲端空間請經「檔案」App 開啟。</li>
+        </ul>
+      </section>
+    </div>
+  </section>
 
-  <h2>不支援</h2>
-  <ul>
-    <li>KDBX 3.1 與 KeePass 1.x 的資料庫。</li>
-    <li>YubiKey 與 HOTP。</li>
-    <li>Dropbox 以外的雲端服務直接連線。其他雲端空間請經「檔案」App 開啟。</li>
-  </ul>
-
-  <p><a href="/privacy/">隱私政策</a> · <a href="/support/">支援與問題回報</a></p>
+  <section class="home-section">
+    <div class="wrap">
+      <div class="privacy-card">
+        <div class="privacy-card-text">
+          <h2>KeyDBX 不收集你的資料</h2>
+          <p>沒有分析、廣告、追蹤或第三方 SDK。App 本身只在你使用 Dropbox 時連線網路，而且只連到 Dropbox。</p>
+        </div>
+        <a class="btn btn-gold" href="/privacy/">閱讀隱私政策</a>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site">
-  <div class="wrap">
-    <p>KeePass、KeePassXC、Dropbox、Apple、iPhone、iCloud 與 Face ID 是各自擁有者的商標。KeyDBX 與這些擁有者沒有關聯。</p>
-    <p><a href="/privacy/">隱私政策</a> · <a href="/support/">支援</a> · <a href="/en/" lang="en" hreflang="en">English</a></p>
+  <div class="wrap footer-bar">
+    <p class="footer-note">KeePass、KeePassXC、Dropbox、Apple、iPhone、iCloud 與 Face ID 是各自擁有者的商標。KeyDBX 與這些擁有者沒有關聯。</p>
+    <p class="footer-links"><a href="/privacy/">隱私政策</a> · <a href="/support/">支援</a> · <a href="/en/" lang="en" hreflang="en">English</a></p>
   </div>
 </footer>
 </body>
